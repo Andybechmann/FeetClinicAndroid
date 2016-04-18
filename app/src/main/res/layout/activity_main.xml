@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Treatment"
         android:id="@+id/btnTreatment"
-              android:layout_marginRight="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginTop="134dp" />
 
