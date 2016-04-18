@@ -23,5 +23,12 @@ public class TreatmentActivity extends AppCompatActivity {
         btnBack = (Button)findViewById(R.id.btnBack);
         listTreatments = (ListView)findViewById(R.id.listTreatments);
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 }
