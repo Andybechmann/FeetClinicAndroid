@@ -12,9 +12,9 @@ public class Treatment {
     private int duration;
     private String type;
 
-    public Treatment()
+    public Treatment(String name)
     {
-
+    setName(name);
     }
 
     public Treatment(String name, String description, String imageUrl, int price, int duration, String type) {
@@ -25,6 +25,7 @@ public class Treatment {
         this.duration = duration;
         this.type = type;
     }
+
 
     public String getName() {
         return name;
