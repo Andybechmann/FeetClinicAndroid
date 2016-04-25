@@ -1,0 +1,68 @@
+package com.example.bruger.feetclinic;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.bruger.feetclinic.BE.Treatment;
+
+import java.util.ArrayList;
+
+/**
+ * Created by Buster on 25-02-2016.
+ */
+public class CustomListViewAdapter extends BaseAdapter {
+
+    private Context mContext;
+    private ArrayList<Treatment> treatments;
+    private static LayoutInflater inflater = null;
+
+
+    public CustomListViewAdapter(Context context, ArrayList<Treatment> data)
+    {
+        mContext = context;
+        treatments = data;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+    }
+
+    @Override
+    public int getCount() {
+        return treatments.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        View view = convertView;
+
+        if(convertView==null){
+            view = inflater.inflate(R.layout.list_treatments, null);
+        }
+        TextView name = (TextView) view.findViewById(R.id.name);
+        TextView price = (TextView) view.findViewById(R.id.price);
+
+
+
+        Treatment treatment = treatments.get(position);
+
+        name.setText(treatment.getName());
+        price.setText("price: " + treatment.getPrice());
+
+        return view;
+    }
+}

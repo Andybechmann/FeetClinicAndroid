@@ -20,7 +20,7 @@ import java.util.Scanner;
 public class
 		TreatmentDAO {
 
-	private final String URL = "http://feetclinic-ievg0012.rhcloud.com/api/treatment";
+	private final String URL = "http://localhost:9000/api/treatments";
 
 	private final String TAG = "POLICE";
 
@@ -34,9 +34,10 @@ public class
      */
     public void loadFake()
     {
-       // m_districts.add(new BEPoliceDistrict(1, "a"));
-       // m_districts.add(new BEPoliceDistrict(2, "b"));
-       // m_districts.add(new BEPoliceDistrict(3, "c"));
+		treatments.add(new Treatment("søren"));
+		treatments.add(new Treatment("peter"));
+		treatments.add(new Treatment("søren25"));
+
     }
 
 	public void loadAll()

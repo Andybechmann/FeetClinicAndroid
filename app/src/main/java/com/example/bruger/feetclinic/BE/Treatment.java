@@ -17,6 +17,11 @@ public class Treatment {
     setName(name);
     }
 
+    public Treatment(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
+
     public Treatment(String name, String description, String imageUrl, int price, int duration, String type) {
         this.name = name;
         this.description = description;
