@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Stepanenko on 25/04/2016.
  */
-public class TreatmentDAOTask extends AsyncTask<TreatmentDAO,Void,ArrayList<Treatment>>
+public class TreatmentDAOTask extends AsyncTask<ApiRepo,Void,ArrayList<Treatment>>
 {
     private TreatmentActivity context;
 
@@ -19,7 +19,7 @@ public class TreatmentDAOTask extends AsyncTask<TreatmentDAO,Void,ArrayList<Trea
     }
 
     @Override
-    protected ArrayList<Treatment> doInBackground(TreatmentDAO... params) {
+    protected ArrayList<Treatment> doInBackground(ApiRepo... params) {
         params[0].loadAll();
         return params[0].getAll();
     }

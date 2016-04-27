@@ -3,6 +3,7 @@ package com.example.bruger.feetclinic.DAL.Treatment;
 import android.util.Log;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
+import com.example.bruger.feetclinic.DAL.IRepository;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,7 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class TreatmentDAO implements ITreatmentDAO {
+public class ApiRepo implements IRepository<Treatment> {
 
 	private final String URL = "http://feetclinic-ievg0012.rhcloud.com/api/treatments";
 
@@ -22,7 +23,7 @@ public class TreatmentDAO implements ITreatmentDAO {
 
 	private ArrayList<Treatment> treatments;
 
-	public TreatmentDAO(){ treatments = new ArrayList<Treatment>();
+	public ApiRepo(){ treatments = new ArrayList<Treatment>();
 	}
 
     /**
@@ -42,10 +43,7 @@ public class TreatmentDAO implements ITreatmentDAO {
 		String result = getContent(URL);
 
         if (result == null) return;
-
-
 			JSONArray array = new JSONArray(result);
-
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject treatment = array.getJSONObject(i);
 
@@ -63,6 +61,36 @@ public class TreatmentDAO implements ITreatmentDAO {
 	
 	public ArrayList<Treatment> getAll()
 	{ return treatments; }
+
+	@Override
+	public Treatment create(Treatment treatment) {
+		return null;
+	}
+
+	@Override
+	public Treatment get(String id) {
+		return null;
+	}
+
+	@Override
+	public Treatment update(Treatment treatment) {
+		return null;
+	}
+
+	@Override
+	public Treatment update(Treatment treatment, String id) {
+		return null;
+	}
+
+	@Override
+	public Treatment delete(Treatment treatment) {
+		return null;
+	}
+
+	@Override
+	public Treatment delete(String id) {
+		return null;
+	}
 
 
 	/**
@@ -90,32 +118,4 @@ public class TreatmentDAO implements ITreatmentDAO {
         }
         return sb.toString();
     }
-/*
-	private String fromUrlToString(String urlParam)
-	{
-		BufferedReader reader=null;
-		try
-		{
-			java.net.URL url = new URL(urlParam);
-			URLConnection conn = url.openConnection();
-			reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while((line = reader.readLine()) != null)
-				sb.append(line + "\n");
-			return sb.toString();
-		}
-		catch (MalformedURLException e) {
-			e.printStackTrace();
-			Log.d(TAG, "URL malformed", e);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-			Log.d(TAG, "IO error", e);
-		}
-		return null;
-
-	}
-*/
-
 }
