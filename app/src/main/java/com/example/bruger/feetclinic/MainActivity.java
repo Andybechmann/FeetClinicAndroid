@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.bruger.feetclinic.UI.Booking.BookingActivity;
+import com.example.bruger.feetclinic.UI.Therapist.TherapistActivity;
 import com.example.bruger.feetclinic.UI.Treatment.TreatmentActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -13,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Button btnTreatment;
+    private Button btnTherapist;
+    private Button btnBooking;
 
 
 
@@ -22,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnTreatment = (Button)findViewById(R.id.btnTreatment);
+        btnTherapist = (Button)findViewById(R.id.btnTherapist);
+        btnBooking = (Button)findViewById(R.id.btnBooking);
+
 
 
         btnTreatment.setOnClickListener(new View.OnClickListener() {
@@ -31,6 +38,28 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        btnTherapist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickTherapist();
+            }
+        });
+        btnBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickBooking();
+            }
+        });
+    }
+
+    private void onClickBooking() {
+        Intent intent = new Intent(this,BookingActivity.class);
+        startActivity(intent);
+    }
+
+    private void onClickTherapist() {
+        Intent intent = new Intent(this,TherapistActivity.class);
+        startActivity(intent);
     }
 
     private void onClickTreatment() {

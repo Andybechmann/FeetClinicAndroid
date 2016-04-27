@@ -12,14 +12,39 @@
     >
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="175dp"
+        android:layout_height="75dp"
+        android:padding="4dip"
         android:text="@string/treatment"
         android:id="@+id/btnTreatment"
         android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:background="@drawable/button"/>
+
+    <Button
+        android:layout_width="175dp"
+        android:layout_height="75dp"
+        android:padding="4dip"
+        android:text="@string/therapist"
+        android:id="@+id/btnTherapist"
+        android:background="@drawable/button"
+        android:layout_below="@+id/btnBooking"
+        android:layout_alignLeft="@+id/btnBooking"
+        android:layout_alignStart="@+id/btnBooking"
+        android:layout_marginTop="85dp" />
+
+    <Button
+        android:layout_width="175dp"
+        android:layout_height="75dp"
+        android:padding="4dip"
+        android:text="@string/bookings"
+        android:id="@+id/btnBooking"
+        android:background="@drawable/button"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/btnTreatment"
+        android:layout_alignStart="@+id/btnTreatment" />
 
 </RelativeLayout>

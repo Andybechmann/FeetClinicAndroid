@@ -16,6 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.Treatment.TreatmentActivity"/>
+        <activity android:name=".UI.Therapist.TherapistActivity"/>
+        <activity android:name=".UI.Booking.BookingActivity"/>
            </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
