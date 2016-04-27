@@ -48,6 +48,7 @@ public class ApiRepo implements IRepository<Treatment> {
 				JSONObject treatment = array.getJSONObject(i);
 
 				Treatment t = new Treatment( treatment.getString("name"),treatment.getInt("price"));
+				t.setId(treatment.getString("_id"));
 				treatments.add(t);
 			}
 

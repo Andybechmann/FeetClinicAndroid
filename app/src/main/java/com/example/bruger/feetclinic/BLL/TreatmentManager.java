@@ -58,4 +58,7 @@ public class TreatmentManager {
     }
 
 
+    public Treatment get(String id) {
+        return workingRepository.get(id);
+    }
 }

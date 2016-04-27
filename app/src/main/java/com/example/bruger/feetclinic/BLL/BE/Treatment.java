@@ -6,6 +6,7 @@ package com.example.bruger.feetclinic.BLL.BE;
 public class Treatment {
 
     private String name;
+    private String id;
     private String description;
     private String imageUrl;
     private int price;
@@ -29,6 +30,10 @@ public class Treatment {
         this.price = price;
         this.duration = duration;
         this.type = type;
+    }
+
+    public Treatment() {
+
     }
 
 
@@ -78,5 +83,13 @@ public class Treatment {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
