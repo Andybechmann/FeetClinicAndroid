@@ -1,11 +1,14 @@
 package com.example.bruger.feetclinic.UI.Treatment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
@@ -22,6 +25,9 @@ import java.util.List;
  * Created by Bruger on 25-04-2016.
  */
 public class TreatmentActivity extends AppCompatActivity {
+
+    private Button btnCreate;
+
 
     private CustomListViewAdapter customListViewAdapter;
     private ListView listView;
@@ -40,6 +46,20 @@ public class TreatmentActivity extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.list);
         setUpAdapter();
 
+        btnCreate = (Button)findViewById(R.id.btnCreate);
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickCreate();
+            }
+        });
+
+
+    }
+
+    private void onClickCreate() {
+        Intent intent = new Intent(this,TreatmentDetailsActivity.class);
+        startActivity(intent);
     }
 
 
@@ -62,9 +82,29 @@ public class TreatmentActivity extends AppCompatActivity {
 
     }
 
+
+    private void goTreatmentDetailAc(String id)
+    {
+        Intent intent = new Intent(this,TreatmentDetailsActivity.class);
+        intent.putExtra("id",id);
+        startActivity(intent);
+    }
+
     public void update(List<Treatment> arrTreatments) {
         arrTreatments.removeAll(treatments); //removing existing items
         treatments.addAll(arrTreatments);
         setUpAdapter();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Treatment t = treatments.get(position);
+
+                String treatmentId = t.getId();
+                goTreatmentDetailAc(treatmentId);
+
+
+            }
+        });
     }
 }
