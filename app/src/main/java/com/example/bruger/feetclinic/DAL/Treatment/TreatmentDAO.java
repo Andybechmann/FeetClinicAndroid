@@ -1,8 +1,9 @@
-package com.example.bruger.feetclinic.DAL;
+package com.example.bruger.feetclinic.DAL.Treatment;
 
 import android.util.Log;
 
 import com.example.bruger.feetclinic.BE.Treatment;
+import com.example.bruger.feetclinic.DAL.Treatment.ITreatmentDAO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,14 +18,13 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class
-		TreatmentDAO {
+public class TreatmentDAO implements ITreatmentDAO {
 
-	private final String URL = "http://localhost:9000/api/treatments";
+	private final String URL = "http://feetclinic-ievg0012.rhcloud.com/api/treatments";
 
-	private final String TAG = "POLICE";
+	private final String TAG = "TREATMENT";
 
-	ArrayList<Treatment> treatments;
+	private ArrayList<Treatment> treatments;
 
 	public TreatmentDAO(){ treatments = new ArrayList<Treatment>();
 	}
@@ -51,9 +51,9 @@ public class
 			JSONArray array = new JSONArray(result);
 
 			for (int i = 0; i < array.length(); i++) {
-				JSONObject d = array.getJSONObject(i);
+				JSONObject treatment = array.getJSONObject(i);
 
-				Treatment t = new Treatment( d.getString("name"));
+				Treatment t = new Treatment( treatment.getString("name"),treatment.getInt("price"));
 				treatments.add(t);
 			}
 
@@ -78,11 +78,8 @@ public class
     {
         StringBuilder sb = new StringBuilder();
         try {
-
-
             java.net.URL url = new URL(urlString);
             Scanner s = new Scanner(url.openStream());
-
             while (s.hasNextLine()) {
                 String line = s.nextLine();
                 sb.append(line);
@@ -97,7 +94,7 @@ public class
         }
         return sb.toString();
     }
-
+/*
 	private String fromUrlToString(String urlParam)
 	{
 		BufferedReader reader=null;
@@ -123,6 +120,6 @@ public class
 		return null;
 
 	}
-
+*/
 
 }
