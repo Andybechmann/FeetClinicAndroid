@@ -30,6 +30,7 @@ public class TreatmentManager {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         isConnected = activeNetwork.isConnectedOrConnecting();
         sqlRepository = new SqlRepo();
+        setUpRepository();
 
        
     }
