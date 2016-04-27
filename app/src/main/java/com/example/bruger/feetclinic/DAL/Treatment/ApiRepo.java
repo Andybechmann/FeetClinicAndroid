@@ -29,13 +29,6 @@ public class ApiRepo implements IRepository<Treatment> {
     /**
      * Simple mockup function - can be used when testing offline.
      */
-    public void loadFake()
-    {
-		treatments.add(new Treatment("søren"));
-		treatments.add(new Treatment("peter"));
-		treatments.add(new Treatment("søren25"));
-
-    }
 
 	public void loadAll()
 	{
@@ -60,7 +53,9 @@ public class ApiRepo implements IRepository<Treatment> {
 	}
 	
 	public ArrayList<Treatment> getAll()
-	{ return treatments; }
+	{
+		loadAll();
+		return treatments; }
 
 	@Override
 	public Treatment create(Treatment treatment) {
@@ -104,6 +99,7 @@ public class ApiRepo implements IRepository<Treatment> {
         try {
             java.net.URL url = new URL(urlString);
             Scanner s = new Scanner(url.openStream());
+
             while (s.hasNextLine()) {
                 String line = s.nextLine();
                 sb.append(line);

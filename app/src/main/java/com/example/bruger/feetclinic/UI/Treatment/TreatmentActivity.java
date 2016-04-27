@@ -11,10 +11,11 @@ import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
 import com.example.bruger.feetclinic.BLL.TreatmentManager;
 import com.example.bruger.feetclinic.DAL.Treatment.ApiRepo;
-import com.example.bruger.feetclinic.DAL.Treatment.TreatmentDAOTask;
+import com.example.bruger.feetclinic.BLL.AsyncTask.TreatmentManagerTask;
 import com.example.bruger.feetclinic.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,7 +27,7 @@ public class TreatmentActivity extends AppCompatActivity {
     private ListView listView;
     ArrayList<Treatment> treatments;
     TreatmentManager manager;
-    TreatmentDAOTask task;
+    TreatmentManagerTask task;
 
 
     @Override
@@ -43,7 +44,6 @@ public class TreatmentActivity extends AppCompatActivity {
 
 
     private void setUpAdapter(){
-        //setup adapter
         customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), treatments);
         listView.setAdapter(customListViewAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -56,13 +56,13 @@ public class TreatmentActivity extends AppCompatActivity {
 
     private void populateTreatments(){
 
-        task = new TreatmentDAOTask(this);
-        task.execute(new ApiRepo());
+        task = new TreatmentManagerTask(this);
+        task.execute(new TreatmentManager(this));
 
 
     }
 
-    public void update(ArrayList<Treatment> arrTreatments) {
+    public void update(List<Treatment> arrTreatments) {
         arrTreatments.removeAll(treatments); //removing existing items
         treatments.addAll(arrTreatments);
         setUpAdapter();

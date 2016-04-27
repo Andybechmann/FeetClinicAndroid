@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.DAL.Service.ISynchronize;
+import com.example.bruger.feetclinic.DAL.Service.TreatmentSynchronizer;
 import com.example.bruger.feetclinic.DAL.Treatment.ApiRepo;
 import com.example.bruger.feetclinic.DAL.Treatment.SqlRepo;
 
@@ -29,7 +30,9 @@ public class TreatmentManager {
         cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         isConnected = activeNetwork.isConnectedOrConnecting();
+        synchronizer = new TreatmentSynchronizer();
         sqlRepository = new SqlRepo();
+
         setUpRepository();
 
        
