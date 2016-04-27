@@ -2,8 +2,8 @@ package com.example.bruger.feetclinic.DAL.Treatment;
 
 import android.os.AsyncTask;
 
-import com.example.bruger.feetclinic.BE.Treatment;
-import com.example.bruger.feetclinic.TreatmentActivity;
+import com.example.bruger.feetclinic.BLL.BE.Treatment;
+import com.example.bruger.feetclinic.UI.Treatment.TreatmentActivity;
 
 import java.util.ArrayList;
 

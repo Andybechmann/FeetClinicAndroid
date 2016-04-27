@@ -1,18 +1,18 @@
-package com.example.bruger.feetclinic;
+package com.example.bruger.feetclinic.UI.Treatment;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.bruger.feetclinic.BE.Treatment;
+import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
 import com.example.bruger.feetclinic.DAL.Treatment.TreatmentDAO;
 import com.example.bruger.feetclinic.DAL.Treatment.TreatmentDAOTask;
+import com.example.bruger.feetclinic.R;
+
 import java.util.ArrayList;
 
 

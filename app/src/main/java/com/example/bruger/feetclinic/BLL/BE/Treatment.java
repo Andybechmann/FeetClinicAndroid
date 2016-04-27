@@ -1,4 +1,4 @@
-package com.example.bruger.feetclinic.BE;
+package com.example.bruger.feetclinic.BLL.BE;
 
 /**
  * Created by Bruger on 18-04-2016.

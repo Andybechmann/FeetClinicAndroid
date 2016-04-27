@@ -1,6 +1,6 @@
 package com.example.bruger.feetclinic.DAL.Treatment;
 
-import com.example.bruger.feetclinic.BE.Treatment;
+import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
 import java.util.List;
 

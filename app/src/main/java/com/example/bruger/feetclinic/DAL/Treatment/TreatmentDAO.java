@@ -2,19 +2,15 @@ package com.example.bruger.feetclinic.DAL.Treatment;
 
 import android.util.Log;
 
-import com.example.bruger.feetclinic.BE.Treatment;
-import com.example.bruger.feetclinic.DAL.Treatment.ITreatmentDAO;
+import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package com.example.bruger.feetclinic;
+package com.example.bruger.feetclinic.UI.Treatment;
 
 
 
@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.bruger.feetclinic.BE.Treatment;
+import com.example.bruger.feetclinic.BLL.BE.Treatment;
+import com.example.bruger.feetclinic.R;
 
 import java.util.ArrayList;
 
