@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
@@ -21,6 +22,9 @@ import java.util.ArrayList;
  * Created by Bruger on 25-04-2016.
  */
 public class TreatmentActivity extends AppCompatActivity {
+
+    private Button btnCreate;
+
 
     private CustomListViewAdapter customListViewAdapter;
     private ListView listView;
@@ -39,6 +43,18 @@ public class TreatmentActivity extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.list);
         setUpAdapter();
 
+        btnCreate = (Button)findViewById(R.id.btnCreate);
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickCreate();
+            }
+        });
+
+
+    }
+
+    private void onClickCreate() {
     }
 
 
