@@ -3,4 +3,6 @@
     <string name="treatment">Products</string>
     <string name="therapist">Personale</string>
     <string name="bookings">Bookings</string>
+    <string name="CreateTreatment">Create</string>
+
 </resources>
