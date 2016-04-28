@@ -7,6 +7,7 @@ import com.example.bruger.feetclinic.BLL.TreatmentManager;
 import com.example.bruger.feetclinic.DAL.Treatment.ApiRepo;
 import com.example.bruger.feetclinic.UI.Treatment.TreatmentActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,12 @@ public class TreatmentManagerTask extends AsyncTask<TreatmentManager,Void,List<T
     @Override
     protected List<Treatment> doInBackground(TreatmentManager... params) {
 
-        return params[0].getAll();
+        try {
+            return params[0].getAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
     @Override

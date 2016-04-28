@@ -41,14 +41,8 @@ public class HttpClient {
     }
 //===============DELETE================================================
 
-    public String doDelete() throws IOException{
-        return doDelete(url);
-    }
     public String doDelete(String url ) throws IOException{
         return delete(url).body().string();
-    }
-    public Response delete() throws IOException {
-        return delete(url);
     }
     public Response delete(String url) throws IOException {
         Request request = new Request.Builder()
@@ -79,14 +73,8 @@ public class HttpClient {
     }
 //====================UPDATE==================================================
 
-    public String doUpdate(String json) throws IOException {
-        return  doUpdate(json,url);
-    }
     public String doUpdate(String json,String url) throws IOException {
         return update(json,url).body().string();
-    }
-    public Response update(String json) throws IOException {
-        return update(json,url);
     }
     public Response update(String json,String url) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);

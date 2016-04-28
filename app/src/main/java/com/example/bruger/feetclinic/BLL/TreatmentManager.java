@@ -6,11 +6,13 @@ import android.net.NetworkInfo;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.DAL.IRepository;
+import com.example.bruger.feetclinic.DAL.Treatment.RestApiClient;
 import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronize;
 import com.example.bruger.feetclinic.Service.DBSynchronize.TreatmentSynchronizer;
 import com.example.bruger.feetclinic.DAL.Treatment.ApiRepo;
 import com.example.bruger.feetclinic.DAL.Treatment.SqlRepo;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -32,15 +34,12 @@ public class TreatmentManager {
         isConnected = activeNetwork.isConnectedOrConnecting();
         synchronizer = new TreatmentSynchronizer();
         sqlRepository = new SqlRepo();
-
         setUpRepository();
-
-       
     }
 
     private void setUpRepository(){
         if (isConnected) {
-            restRepository = new ApiRepo();
+            restRepository = new RestApiClient();
             synchronizer.synchronize(restRepository,sqlRepository);
             workingRepository = restRepository;
         }
@@ -50,16 +49,29 @@ public class TreatmentManager {
     }
 
 
-    public List<Treatment> getAll(){
+    public List<Treatment> getAll() throws IOException {
         return workingRepository.getAll();
     }
 
-    public Treatment create(Treatment t){
+    public Treatment create(Treatment t) throws IOException {
         return workingRepository.create(t);
     }
 
 
-    public Treatment get(String id) {
-        return workingRepository.get(id);
+    public Treatment get(String id)  {
+        try {
+            return workingRepository.get(id);
+        } catch (IOException e) {
+            return new Treatment();
+        }
+    }
+
+    private void changeRepository(){
+        if(workingRepository instanceof ApiRepo )
+             workingRepository = sqlRepository;
+        else
+            workingRepository = restRepository;
+
+
     }
 }

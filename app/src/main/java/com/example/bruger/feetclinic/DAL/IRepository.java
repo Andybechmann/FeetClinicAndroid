@@ -7,11 +7,11 @@ import java.util.List;
  * Created by Stepanenko on 27/04/2016.
  */
 public interface IRepository<T> {
-    List<T> getAll() ;
-    T create(T t);
-    T get(String id);
-    T update(T t);
-    T update(T t,String id);
-    T delete(T t);
-    T delete(String id);
+    List<T> getAll() throws IOException;
+    T create(T t) throws IOException;
+    T get(String id) throws IOException;
+    T update(T t) throws IOException;
+    T update(T t,String id) throws IOException;
+    T delete(T t) throws IOException;
+    T delete(String id) throws IOException;
 }

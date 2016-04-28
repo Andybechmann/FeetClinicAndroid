@@ -1,9 +1,12 @@
 package com.example.bruger.feetclinic.Service;
 
+import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,11 +31,33 @@ public class GsonService<T> {
     public String toJson(List<T> listOfT){
         return gson.toJson(listOfT);
     }
-    public List<T> fromJsonArray(String json){
-        Type collectionType = new TypeToken<List<T>>() {}.getType();
-        return gson.fromJson(json,collectionType);
+    public ArrayList<T> fromJsonArray(String json){
+        Type collectionType =new ListParameterizedType(type);
+        ArrayList<T> list = gson.fromJson(json,collectionType);
+        return list;
     }
 
+    private class ListParameterizedType implements ParameterizedType {
 
+        private Type type;
+
+        private ListParameterizedType(Type type) {
+            this.type = type;
+        }
+        @Override
+        public Type[] getActualTypeArguments() {
+            return new Type[] {type};
+        }
+
+        @Override
+        public Type getRawType() {
+            return ArrayList.class;
+        }
+
+        @Override
+        public Type getOwnerType() {
+            return null;
+        }
+    }
 
 }

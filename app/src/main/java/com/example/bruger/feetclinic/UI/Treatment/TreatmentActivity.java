@@ -32,7 +32,7 @@ public class TreatmentActivity extends AppCompatActivity {
     private CustomListViewAdapter customListViewAdapter;
     private ListView listView;
     ArrayList<Treatment> treatments;
-    TreatmentManager manager;
+   // TreatmentManager manager;
     TreatmentManagerTask task;
 
 
@@ -40,11 +40,11 @@ public class TreatmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treatment);
-        manager = new TreatmentManager(this);
+       // manager = new TreatmentManager(this);
         treatments = new ArrayList<Treatment>();
         populateTreatments();
         listView = (ListView)findViewById(R.id.list);
-        setUpAdapter();
+       // setUpAdapter();
 
         btnCreate = (Button)findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
