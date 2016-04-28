@@ -65,6 +65,11 @@ public class ApiRepo implements IRepository<Treatment> {
 
 	@Override
 	public Treatment get(String id) {
+		loadAll();
+		for (Treatment treatment : treatments){
+			if (treatment.getId().equals(id))
+				return treatment;
+		}
 		return null;
 	}
 

@@ -47,23 +47,22 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
         if(id != null )
         {
-            getTreatment(id);
-            setUpFields();
+            treatment = getTreatment(id);
+            setUpFields(treatment);
         }
 
     }
 
-    private void setUpFields() {
-        txtName.setText(treatment.getName());
-        txtDescription.setText(treatment.getDescription());
-        editPrice.setText(treatment.getPrice());
-        editDuration.setText(treatment.getDuration());
+    private void setUpFields(Treatment t) {
+        txtName.setText(t.getName());
+        txtDescription.setText(t.getDescription());
+        editPrice.setText(t.getPrice());
+        editDuration.setText(t.getDuration());
 
     }
 
-    private void getTreatment(String id) {
-        treatment = manager.get(id);
-
+    private Treatment getTreatment(String id) {
+        return manager.get(id);
     }
 }
 
