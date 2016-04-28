@@ -1,4 +1,4 @@
-package com.example.bruger.feetclinic.DAL.Service;
+package com.example.bruger.feetclinic.Service.DBSynchronize;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.DAL.IRepository;

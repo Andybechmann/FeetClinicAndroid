@@ -6,8 +6,8 @@ import android.net.NetworkInfo;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.DAL.IRepository;
-import com.example.bruger.feetclinic.DAL.Service.ISynchronize;
-import com.example.bruger.feetclinic.DAL.Service.TreatmentSynchronizer;
+import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronize;
+import com.example.bruger.feetclinic.Service.DBSynchronize.TreatmentSynchronizer;
 import com.example.bruger.feetclinic.DAL.Treatment.ApiRepo;
 import com.example.bruger.feetclinic.DAL.Treatment.SqlRepo;
 

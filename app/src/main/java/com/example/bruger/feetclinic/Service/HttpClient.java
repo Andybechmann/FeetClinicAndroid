@@ -1,4 +1,4 @@
-package com.example.bruger.feetclinic.DAL.Service.HttpGateway;
+package com.example.bruger.feetclinic.Service;
 
 import java.io.IOException;
 
@@ -12,7 +12,8 @@ import okhttp3.Response;
  * Created by Stepanenko on 28/04/2016.
  */
 public class HttpClient {
-    private final MediaType JSON
+
+    private static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client;
     private String url;
@@ -68,7 +69,7 @@ public class HttpClient {
        return post(json, url);
     }
     public Response post(String json,String url) throws IOException {
-        RequestBody body = RequestBody.create(JSON, json);
+        RequestBody body = RequestBody.create  (JSON,json);
         Request request = new Request.Builder()
                 .url(url)
                 .put(body)
