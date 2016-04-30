@@ -16,7 +16,6 @@ import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -37,57 +36,50 @@ public class TreatmentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_treatment);
         treatments = new ArrayList<>();
         populateTreatments();
-        listView = (ListView)findViewById(R.id.list);
         btnCreate = (Button)findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickCreate();
+                startDetailsActivity(null);
             }
         });
 
 
     }
 
-    private void onClickCreate() {
-        Intent intent = new Intent(this,TreatmentDetailsActivity.class);
-        startActivity(intent);
-    }
 
-    private void setUpAdapter(){
-        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), treatments);
+
+    private void setUpAdapter(final ArrayList<Treatment> listOfTreatments){
+        listView = (ListView)findViewById(R.id.list);
+        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), listOfTreatments);
         listView.setAdapter(customListViewAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Treatment t = treatments.get(position);
-                String treatmentId = t.getId();
-                goTreatmentDetailAc(treatmentId);
+                startDetailsActivity(listOfTreatments.get(position).getId());
             }
         });
     }
 
     private void populateTreatments(){
-        DowloadTask task = new DowloadTask();
+        DownloadTask task = new DownloadTask();
         Thread thread = new Thread(task);
         thread.start();
 
     }
 
-    private void goTreatmentDetailAc(String id)
+    private void startDetailsActivity(String id)
     {
         Intent intent = new Intent(this,TreatmentDetailsActivity.class);
         intent.putExtra("id",id);
         startActivity(intent);
     }
 
-    public void update(List<Treatment> arrTreatments) {
-        treatments.addAll(arrTreatments);
-        setUpAdapter();
+    public void update(ArrayList<Treatment> arrTreatments) {
+        setUpAdapter(arrTreatments);
     }
 
-    class DowloadTask implements Runnable{
-
+    class DownloadTask implements Runnable{
         @Override
         public void run() {
             manager = new TreatmentManager(TreatmentActivity.this);

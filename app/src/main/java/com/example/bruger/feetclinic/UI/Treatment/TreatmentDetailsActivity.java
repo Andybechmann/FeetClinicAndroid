@@ -38,7 +38,6 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
-
         if(id != null )
         {
             populateTreatment(id);
