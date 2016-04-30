@@ -68,8 +68,8 @@ public class TreatmentActivity extends AppCompatActivity {
     }
 
     private void populateTreatments(){
-        Working working = new Working();
-        Thread thread = new Thread(working);
+        DowloadTask task = new DowloadTask();
+        Thread thread = new Thread(task);
         thread.start();
 
     }
@@ -86,7 +86,7 @@ public class TreatmentActivity extends AppCompatActivity {
         setUpAdapter();
     }
 
-    class Working implements Runnable{
+    class DowloadTask implements Runnable{
 
         @Override
         public void run() {

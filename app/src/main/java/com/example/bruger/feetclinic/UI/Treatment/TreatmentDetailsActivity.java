@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
+import com.example.bruger.feetclinic.BLL.Manager.IManager;
 import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
 
@@ -20,13 +21,12 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
     private EditText editPrice;
     private EditText editDuration;
     Treatment treatment;
-    TreatmentManager manager;
+    IManager<Treatment> manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treatmentdetails);
-        manager = new TreatmentManager(this);
         treatment = new Treatment();
 
         // Get Views
@@ -41,8 +41,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
         if(id != null )
         {
-            treatment = getTreatment(id);
-            setUpFields(treatment);
+            populateTreatment(id);
         }
 
     }
@@ -50,18 +49,40 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
     private void setUpFields(Treatment t) {
         txtName.setText(t.getName());
         txtDescription.setText(t.getDescription());
-        editPrice.setText(t.getPrice());
-        editDuration.setText(t.getDuration());
+        editPrice.setText(t.getPrice()+"");
+        editDuration.setText(t.getDuration()+"");
 
     }
 
-    private Treatment getTreatment(String id) {
-        try {
-            return manager.get(id);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void populateTreatment(String id) {
+        DownloadOne task = new DownloadOne(id);
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+
+
+    class DownloadOne implements Runnable{
+        String _id;
+        public DownloadOne(String id) {
+            _id = id;
         }
-        return null;
+
+        @Override
+        public void run() {
+            manager = new TreatmentManager(TreatmentDetailsActivity.this);
+            try {
+                final Treatment t = manager.get(_id);
+                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUpFields(t);
+                    }
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
