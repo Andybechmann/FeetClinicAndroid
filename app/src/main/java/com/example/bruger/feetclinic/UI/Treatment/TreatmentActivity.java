@@ -8,13 +8,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
-import com.example.bruger.feetclinic.BLL.TreatmentManager;
-import com.example.bruger.feetclinic.DAL.Treatment.ApiRepo;
-import com.example.bruger.feetclinic.BLL.AsyncTask.TreatmentManagerTask;
+import com.example.bruger.feetclinic.BLL.Manager.IManager;
+import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
 
 import java.util.ArrayList;
@@ -27,25 +25,19 @@ import java.util.List;
 public class TreatmentActivity extends AppCompatActivity {
 
     private Button btnCreate;
-
-
     private CustomListViewAdapter customListViewAdapter;
     private ListView listView;
     ArrayList<Treatment> treatments;
-   // TreatmentManager manager;
-    TreatmentManagerTask task;
+    IManager<Treatment> manager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treatment);
-       // manager = new TreatmentManager(this);
-        treatments = new ArrayList<Treatment>();
+        treatments = new ArrayList<>();
         populateTreatments();
         listView = (ListView)findViewById(R.id.list);
-       // setUpAdapter();
-
         btnCreate = (Button)findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,26 +54,25 @@ public class TreatmentActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     private void setUpAdapter(){
         customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), treatments);
         listView.setAdapter(customListViewAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Treatment t = treatments.get(position);
+                String treatmentId = t.getId();
+                goTreatmentDetailAc(treatmentId);
             }
         });
     }
 
-
     private void populateTreatments(){
-
-        task = new TreatmentManagerTask(this);
-        task.execute(new TreatmentManager(this));
-
+        Working working = new Working();
+        Thread thread = new Thread(working);
+        thread.start();
 
     }
-
 
     private void goTreatmentDetailAc(String id)
     {
@@ -91,20 +82,26 @@ public class TreatmentActivity extends AppCompatActivity {
     }
 
     public void update(List<Treatment> arrTreatments) {
-        arrTreatments.removeAll(treatments); //removing existing items
         treatments.addAll(arrTreatments);
         setUpAdapter();
+    }
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Treatment t = treatments.get(position);
+    class Working implements Runnable{
 
-                String treatmentId = t.getId();
-                goTreatmentDetailAc(treatmentId);
-
-
+        @Override
+        public void run() {
+            manager = new TreatmentManager(TreatmentActivity.this);
+            try {
+                final ArrayList<Treatment> treatmentList = manager.getAll();
+                TreatmentActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        update(treatmentList);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
 }

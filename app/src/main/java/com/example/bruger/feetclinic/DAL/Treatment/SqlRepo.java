@@ -3,14 +3,14 @@ package com.example.bruger.feetclinic.DAL.Treatment;
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.DAL.IRepository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Stepanenko on 27/04/2016.
  */
 public class SqlRepo implements IRepository<Treatment> {
     @Override
-    public List<Treatment> getAll() {
+    public ArrayList<Treatment> getAll() {
         return null;
     }
 
@@ -35,12 +35,12 @@ public class SqlRepo implements IRepository<Treatment> {
     }
 
     @Override
-    public Treatment delete(Treatment treatment) {
-        return null;
+    public boolean delete(Treatment treatment) {
+        return false;
     }
 
     @Override
-    public Treatment delete(String id) {
-        return null;
+    public boolean delete(String id) {
+        return false;
     }
 }

@@ -6,28 +6,29 @@ import com.example.bruger.feetclinic.Service.GsonService;
 import com.example.bruger.feetclinic.Service.HttpClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Stepanenko on 27/04/2016.
  */
-public class RestApiClient implements IRepository<Treatment> {
+public class RestApiRepo implements IRepository<Treatment> {
 
     private String URL = "http://feetclinic-ievg0012.rhcloud.com/api/treatments";
     private HttpClient httpClient;
     private GsonService<Treatment> gsonService;
 
-    public RestApiClient(String url) {
+    public RestApiRepo(String url) {
         this();
         this.URL = url;
     }
-    public RestApiClient() {
+    public RestApiRepo() {
         httpClient = new HttpClient(URL);
         gsonService = new GsonService<Treatment>(Treatment.class);
     }
 
     @Override
-    public List<Treatment> getAll() throws IOException {
+    public ArrayList<Treatment> getAll() throws IOException {
         String all = httpClient.doGet();
         return gsonService.fromJsonArray(all);
     }
@@ -61,16 +62,16 @@ public class RestApiClient implements IRepository<Treatment> {
     }
 
     @Override
-    public Treatment delete(Treatment treatment) throws IOException {
+    public boolean delete(Treatment treatment) throws IOException {
         return delete(treatment.getId());
     }
 
     @Override
-    public Treatment delete(String id) throws IOException {
+    public boolean delete(String id) throws IOException {
         if (httpClient.delete(appendId(URL,id)).isSuccessful()){
-            return new Treatment();
+            return true;
         }
-        return get(id);
+        return false;
     }
 
     private String appendId(String url,String id){

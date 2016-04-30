@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
-import com.example.bruger.feetclinic.BLL.TreatmentManager;
+import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
 
 /**
@@ -22,11 +21,6 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
     private EditText editDuration;
     Treatment treatment;
     TreatmentManager manager;
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +56,13 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
     }
 
     private Treatment getTreatment(String id) {
-        return manager.get(id);
+        try {
+            return manager.get(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
 }
 
