@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
 
 
-    <TextView
+    <EditText
         android:layout_width="175dp"
-        android:layout_height="75dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:text="name"
+        android:layout_height="40dp"
         android:id="@+id/txtName"
         android:layout_gravity="center_horizontal"
-        android:editable="true" />
+        android:editable="true"
+        android:layout_marginTop="180dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:hint="Enter Name"
+        android:inputType="text"/>
 
-    <TextView
+    <EditText
         android:layout_width="175dp"
         android:layout_height="40dp"
         android:layout_marginTop="15dp"
-        android:text="Description"
+        android:hint="Enter Description"
+        android:inputType="text"
         android:id="@+id/txtDescription"
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/txtName"
         android:layout_alignLeft="@+id/txtName"
         android:layout_alignStart="@+id/txtName"
-        android:editable="true" />
+        android:editable="true"/>
 
     <EditText
         android:layout_width="175dp"
@@ -39,7 +40,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/txtDescription"
         android:layout_alignLeft="@+id/txtDescription"
-        android:layout_alignStart="@+id/txtDescription" />
+        android:layout_alignStart="@+id/txtDescription"
+        android:hint="Enter price" />
 
     <EditText
         android:layout_width="175dp"
@@ -52,15 +54,25 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/editPrice"
         android:layout_alignLeft="@+id/editPrice"
-        android:layout_alignStart="@+id/editPrice"/>
+        android:layout_alignStart="@+id/editPrice"
+        android:hint="Enter Duration" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="name"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="175dp"
+        android:layout_height="75dp"
+        android:padding="4dip"
+        android:text="@string/CreateTreatment"
+        android:id="@+id/btnCreate"
+        android:background="@drawable/button"
+        android:layout_marginTop="54dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/editDuration"
+        android:layout_alignLeft="@+id/editDuration"
+        android:layout_alignStart="@+id/editDuration" />
+
+
+
 
 
 </RelativeLayout>
