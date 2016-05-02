@@ -1,4 +1,4 @@
-package com.example.bruger.feetclinic.DAL.Treatment;
+package com.example.bruger.feetclinic.DAL.REST;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.DAL.IRepository;
@@ -7,22 +7,21 @@ import com.example.bruger.feetclinic.Service.HttpClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Stepanenko on 27/04/2016.
  */
-public class RestApiRepo implements IRepository<Treatment> {
+public class TreatmentRest implements IRepository<Treatment> {
 
     private String URL = "http://feetclinic-ievg0012.rhcloud.com/api/treatments";
     private HttpClient httpClient;
     private GsonService<Treatment> gsonService;
 
-    public RestApiRepo(String url) {
+    public TreatmentRest(String url) {
         this();
         this.URL = url;
     }
-    public RestApiRepo() {
+    public TreatmentRest() {
         httpClient = new HttpClient(URL);
         gsonService = new GsonService<Treatment>(Treatment.class);
     }
@@ -51,19 +50,19 @@ public class RestApiRepo implements IRepository<Treatment> {
 
         String treatmentToUpdate = gsonService.toJson(treatment);
         String updatedTreatment = httpClient
-                .doUpdate(treatmentToUpdate, appendId(URL, treatment.getId()));
+                .doUpdate(treatmentToUpdate, appendId(URL, treatment.get_Id()));
         return gsonService.fromJson(updatedTreatment);
     }
 
     @Override
     public Treatment update(Treatment treatment, String id) throws IOException {
-        treatment.setId(id);
+        treatment.set_Id(id);
         return update(treatment);
     }
 
     @Override
     public boolean delete(Treatment treatment) throws IOException {
-        return delete(treatment.getId());
+        return delete(treatment.get_Id());
     }
 
     @Override

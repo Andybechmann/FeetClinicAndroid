@@ -1,5 +1,8 @@
 package com.example.bruger.feetclinic.DAL;
 
+import com.example.bruger.feetclinic.BLL.BE.IEntity;
+import com.orm.SugarRecord;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -8,11 +11,11 @@ import java.util.ArrayList;
  * Created by Stepanenko on 27/04/2016.
  */
 public interface IRepository<T> {
-    ArrayList<T> getAll() throws IOException;
-    T create(T t) throws IOException;
-    T get(String id) throws IOException;
-    T update(T t) throws IOException;
-    T update(T t,String id) throws IOException;
-    boolean delete(T t) throws IOException;
-    boolean delete(String id) throws IOException;
+    ArrayList<T> getAll() throws Exception;
+    T create(T t) throws Exception;
+    T get(String id) throws Exception;
+    T update(T t) throws Exception;
+    T update(T t,String id) throws Exception;
+    boolean delete(T t) throws Exception;
+    boolean delete(String id) throws Exception;
 }

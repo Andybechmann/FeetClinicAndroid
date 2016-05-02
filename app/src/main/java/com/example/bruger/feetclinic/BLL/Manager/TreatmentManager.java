@@ -7,7 +7,7 @@ import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.BLL.ISourceManager;
 import com.example.bruger.feetclinic.BLL.TreatmentSourceManager;
 import com.example.bruger.feetclinic.DAL.IRepository;
-import java.io.IOException;
+
 import java.util.ArrayList;
 
 /**
@@ -44,13 +44,13 @@ public class TreatmentManager implements IManager<Treatment> {
 
     @Override
     public Treatment update(Treatment treatment, String id) throws Exception {
-        treatment.setId(id);
+        treatment.set_Id(id);
         return workingRepository.update(treatment);
     }
 
     @Override
     public boolean delete(Treatment treatment) throws Exception {
-        return delete(treatment.getId());
+        return delete(treatment.get_Id());
     }
 
     @Override

@@ -47,8 +47,6 @@ public class TreatmentActivity extends AppCompatActivity {
 
     }
 
-
-
     private void setUpAdapter(final ArrayList<Treatment> listOfTreatments){
         listView = (ListView)findViewById(R.id.list);
         customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), listOfTreatments);
@@ -56,7 +54,7 @@ public class TreatmentActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                startDetailsActivity(listOfTreatments.get(position).getId());
+                startDetailsActivity(listOfTreatments.get(position).get_Id());
             }
         });
     }
