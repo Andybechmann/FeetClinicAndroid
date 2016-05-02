@@ -16,9 +16,6 @@ import com.example.bruger.feetclinic.BLL.Manager.IManager;
 import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-
 /**
  * Created by Bruger on 27-04-2016.
  */
@@ -29,8 +26,9 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
     private EditText editPrice;
     private EditText editDuration;
     Treatment treatment;
-
+    String treatmentId;
     Button btnCreate;
+    Button btnDelete;
 
     AlertDialog alert;
 
@@ -40,8 +38,9 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treatmentdetails);
-        treatment = new Treatment();
 
+        Intent intent = getIntent();
+        treatmentId = intent.getStringExtra("id");
 
         // Get Views
         txtName = (TextView)findViewById(R.id.txtName);
@@ -49,39 +48,74 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
         editPrice = (EditText)findViewById(R.id.editPrice);
         editDuration = (EditText)findViewById(R.id.editDuration);
         btnCreate = (Button)findViewById(R.id.btnCreate);
+        btnDelete = (Button)findViewById(R.id.btnDelete);
+        if(treatmentId == null)
+        {
+            btnDelete.setVisibility(View.INVISIBLE);
+        }
 
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveTreatmentDetails();
+                if(treatmentId == null){
+                createNewTreatment();
+                }else {
+                    updateTreatment();  //to REST
+                }
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTreatment();
             }
         });
 
 
-        Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
-        if(id != null )
+        if(treatmentId != null )
         {
-            populateTreatment(id);
+            populateTreatment(treatmentId);
         }
 
     }
 
-    private void saveTreatmentDetails() {
-        Treatment treatment = new Treatment();
+    private void deleteTreatment() {
+        DeleteOne delete = new DeleteOne(treatment);
+        Thread thread = new Thread(delete);
+        thread.start();
+    }
+
+    private void updateTreatment() {
+
+
 
         treatment.setName(txtName.getText().toString());
         treatment.setDescription(txtDescription.getText().toString());
         treatment.setPrice(Integer.parseInt(editPrice.getText().toString()));
         treatment.setDuration(Integer.parseInt(editDuration.getText().toString()));
 
-        try {
-            manager.create(treatment);
-            Toast.makeText(this,"Treatment has been saved! ", Toast.LENGTH_SHORT).show();
+        UpdateOne updateOne = new UpdateOne(treatment);
+        Thread thread = new Thread(updateOne);
+        thread.start();
+    }
 
-        } catch (Exception e) {
-            alertDialog("Has not been created! " + e.toString());
-        }
+    private void updateTreatmentUI(Treatment t) {
+        treatment = t;
+        setUpFields(t);
+    }
+
+    private void createNewTreatment() {
+        Treatment treatment = new Treatment();
+
+
+        treatment.setName(txtName.getText().toString());
+        treatment.setDescription(txtDescription.getText().toString());
+        treatment.setPrice(Integer.parseInt(editPrice.getText().toString()));
+        treatment.setDuration(Integer.parseInt(editDuration.getText().toString()));
+
+        CreateOne createOne = new CreateOne(treatment);
+        Thread thread = new Thread(createOne);
+        thread.start();
     }
 
     private void setUpFields(Treatment t) {
@@ -89,6 +123,36 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
         txtDescription.setText(t.getDescription());
         editPrice.setText(t.getPrice()+"");
         editDuration.setText(t.getDuration()+"");
+
+    }
+    private void cleanUpFields()
+    {
+        txtName.setText("");
+        txtDescription.setText("");
+        editPrice.setText("");
+        editDuration.setText("");
+    }
+
+    private void okToast(String msg)
+    {
+        Toast.makeText(this,msg, Toast.LENGTH_SHORT).show();
+        cleanUpFields();
+    }
+
+
+    private void alertDialog(String message)
+    {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
 
     }
 
@@ -113,30 +177,111 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
                 TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        setUpFields(t);
+                        updateTreatmentUI(t);
                     }
                 });
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (final Exception e) {
+                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        alertDialog("found none ! " + e.toString());
+                    }
+                });
+
             }
         }
     }
 
-    private void alertDialog(String message)
-    {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //do things
+
+    class CreateOne implements Runnable{
+        Treatment treatment;
+        public CreateOne(Treatment treatment) {
+            this.treatment = treatment;
+        }
+
+        @Override
+        public void run() {
+            manager = new TreatmentManager(TreatmentDetailsActivity.this);
+            try {
+                treatment = manager.create(treatment);
+                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        okToast("Treatment has been saved! ");
+                        updateTreatmentUI(treatment);
                     }
                 });
-        AlertDialog alert = builder.create();
-        alert.show();
+            } catch (final Exception e) {
+                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        alertDialog("Has not been created!! " + e.toString());
+                    }
+                });
+            }
+        }
+    }
+    class UpdateOne implements Runnable{
+        Treatment treatment;
+        public UpdateOne(Treatment treatment) {
+            this.treatment = treatment;
+        }
 
+        @Override
+        public void run() {
+            manager = new TreatmentManager(TreatmentDetailsActivity.this);
+            try {
+                treatment = manager.update(treatment);
+                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        okToast("Treatment has been saved! ");
+                        updateTreatmentUI(treatment);
+                    }
+                });
+            } catch (final Exception e) {
+                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        alertDialog("Has not been Changed!! " + e.toString());
+                    }
+                });
+            }
+        }
+    }
+
+    class DeleteOne implements Runnable{
+        Treatment treatment;
+        boolean succes;
+        public DeleteOne(Treatment treatment) {
+            this.treatment = treatment;
+        }
+
+        @Override
+        public void run() {
+            manager = new TreatmentManager(TreatmentDetailsActivity.this);
+            try {
+                succes = manager.delete(treatment);
+                treatment = new Treatment();
+                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        okToast("Treatment has been deletet");
+                        updateTreatmentUI(treatment);
+                        finish();
+                    }
+                });
+            } catch (final Exception e) {
+                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        alertDialog("Has not been Deletet!! " + e.toString());
+                    }
+                });
+            }
+        }
     }
 
 }

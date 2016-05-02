@@ -3,7 +3,7 @@
     <string name="treatment">Products</string>
     <string name="therapist">Personale</string>
     <string name="bookings">Bookings</string>
-    <string name="CreateTreatment">Create</string>
+    <string name="CreateTreatment">Save</string>
     <string name="btnCreate">Create new</string>
-
+    <string name="DeleteTreatment">Delete</string>
 </resources>
