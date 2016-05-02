@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.BLL.Manager.IManager;
@@ -76,9 +77,10 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
         try {
             manager.create(treatment);
-            alertDialog();
+            Toast.makeText(this,"Treatment has been saved! ", Toast.LENGTH_SHORT).show();
+
         } catch (Exception e) {
-            alertDialog();
+            alertDialog("Has not been created! " + e.toString());
         }
     }
 
@@ -121,11 +123,11 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void alertDialog()
+    private void alertDialog(String message)
     {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Look at this dialog!")
+        builder.setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
