@@ -1,5 +1,6 @@
 package com.example.bruger.feetclinic.UI.Treatment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -30,10 +31,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
     Button btnCreate;
 
-
-
-
-
+    AlertDialog alert;
 
     IManager<Treatment> manager;
 
@@ -42,6 +40,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treatmentdetails);
         treatment = new Treatment();
+
 
         // Get Views
         txtName = (TextView)findViewById(R.id.txtName);
@@ -77,10 +76,9 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
         try {
             manager.create(treatment);
+            alertDialog();
         } catch (Exception e) {
-            AlertDialog alert = new AlertDialog.Builder(this).create();
-            alert.setMessage("TEST");
-            alert.show();
+            alertDialog();
         }
     }
 
@@ -121,6 +119,22 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void alertDialog()
+    {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Look at this dialog!")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //do things
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
 }
