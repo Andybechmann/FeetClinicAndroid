@@ -1,6 +1,7 @@
 package com.example.bruger.feetclinic.Service.DBSynchronize;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
+import com.example.bruger.feetclinic.BLL.ISourceManager;
 import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.DAL.IUsyncRepository;
 import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronize;
@@ -12,6 +13,10 @@ import java.util.ArrayList;
  */
 public class TreatmentSynchronizer implements ISynchronize<Treatment> {
 
+    ISourceManager<Treatment> sourceManager;
+    public TreatmentSynchronizer(ISourceManager<Treatment> manager) {
+        sourceManager = manager;
+    }
 
     @Override
     public boolean synchronize(IRepository<Treatment> main, IUsyncRepository<Treatment> slave) {
@@ -30,6 +35,7 @@ public class TreatmentSynchronizer implements ISynchronize<Treatment> {
                 if (!syncUpdated(treatment, main))
                     return false;
             }
+
 
             return true;
         } catch (Exception e) {

@@ -13,7 +13,9 @@ import com.example.bruger.feetclinic.DAL.SQLite.TreatmentSqlite;
  */
 public class TreatmentSourceManager implements ISourceManager<Treatment> {
 
-    IRepository<Treatment> repository;
+    IRepository<Treatment> activeRepository;
+    boolean isConnected;
+
     public TreatmentSourceManager(ConnectivityManager cm) {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         instanceRepository(activeNetwork.isConnectedOrConnecting());
@@ -21,16 +23,16 @@ public class TreatmentSourceManager implements ISourceManager<Treatment> {
 
     private void instanceRepository(boolean isConnection){
         if (isConnection){
-            repository = new TreatmentRest();
+            activeRepository = new TreatmentRest();
         }
         else {
-            repository = new TreatmentSqlite();
+            activeRepository = new TreatmentSqlite();
         }
 
     }
 
     @Override
     public IRepository<Treatment> getResource() {
-        return repository;
+        return activeRepository;
     }
 }

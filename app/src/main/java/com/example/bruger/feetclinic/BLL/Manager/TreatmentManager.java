@@ -7,6 +7,8 @@ import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.BLL.ISourceManager;
 import com.example.bruger.feetclinic.BLL.TreatmentSourceManager;
 import com.example.bruger.feetclinic.DAL.IRepository;
+import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronize;
+import com.example.bruger.feetclinic.Service.DBSynchronize.TreatmentSynchronizer;
 
 import java.util.ArrayList;
 

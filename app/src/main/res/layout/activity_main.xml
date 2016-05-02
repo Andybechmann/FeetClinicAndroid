@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
     android:layout_marginBottom="10dp"
     android:layout_marginLeft="20dp"
@@ -15,43 +15,38 @@
     >
 
     <Button
-        android:layout_width="175dp"
-        android:layout_height="75dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
         android:padding="4dip"
         android:text="@string/treatment"
         android:id="@+id/btnTreatment"
-        android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
         android:background="@drawable/button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_above="@+id/btnBooking"
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="175dp"
-        android:layout_height="75dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:text="@string/bookings"
+        android:id="@+id/btnBooking"
+        android:background="@drawable/button"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="50dp" />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="100dp"
         android:padding="4dip"
         android:text="@string/therapist"
         android:id="@+id/btnTherapist"
         android:background="@drawable/button"
         android:layout_below="@+id/btnBooking"
-        android:layout_alignLeft="@+id/btnBooking"
-        android:layout_alignStart="@+id/btnBooking"
-        android:layout_marginTop="85dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_centerHorizontal="true"
+         />
 
-    <Button
-        android:layout_width="175dp"
-        android:layout_height="75dp"
-        android:padding="4dip"
-        android:text="@string/bookings"
-        android:id="@+id/btnBooking"
-        android:background="@drawable/button"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/btnTreatment"
-        android:layout_alignLeft="@+id/btnTreatment"
-        android:layout_alignStart="@+id/btnTreatment"
-        android:layout_marginTop="85dp" />
+
 
 </RelativeLayout>
