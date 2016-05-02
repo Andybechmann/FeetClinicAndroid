@@ -1,41 +1,51 @@
 package com.example.bruger.feetclinic.BLL.BE;
 
+
+import com.orm.SugarRecord;
+import com.orm.dsl.Table;
+
 /**
  * Created by Bruger on 18-04-2016.
  */
 public class Treatment implements IEntity{
 
-    private String name;
-    private String _id;
-    private String description;
-    private String imageUrl;
-    private int price;
-    private int duration;
-    private String type;
+    protected String name;
+    protected String _id;
+    protected String description;
+    protected String imageUrl;
+    protected int price;
+    protected int duration;
+    protected String type;
 
+    public Treatment() {
+    }
+
+    public Treatment(Treatment treatment) {
+        this.name = treatment.getName();
+        this._id = treatment.get_Id();
+        this.description = treatment.getDescription();
+        this.imageUrl = treatment.getImageUrl();
+        this.price = treatment.getPrice();
+        this.duration = treatment.getDuration();
+        this.type = treatment.getType();
+    }
     public Treatment(String name)
     {
-    setName(name);
+        this.name = name;
     }
 
     public Treatment(String name, int price) {
-        this.name = name;
+        this(name);
         this.price = price;
     }
 
     public Treatment(String name, String description, String imageUrl, int price, int duration, String type) {
-        this.name = name;
+        this(name,price);
         this.description = description;
         this.imageUrl = imageUrl;
-        this.price = price;
         this.duration = duration;
         this.type = type;
     }
-
-    public Treatment() {
-
-    }
-
 
     public String getName() {
         return name;
@@ -85,11 +95,11 @@ public class Treatment implements IEntity{
         this.type = type;
     }
 
-    public String getId() {
+    public String get_Id() {
         return _id;
     }
 
-    public void setId(String id) {
+    public void set_Id(String id) {
         this._id = id;
     }
 }

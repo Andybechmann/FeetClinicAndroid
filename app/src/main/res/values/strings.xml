@@ -4,5 +4,6 @@
     <string name="therapist">Personale</string>
     <string name="bookings">Bookings</string>
     <string name="CreateTreatment">Create</string>
+    <string name="btnCreate">Create new</string>
 
 </resources>
