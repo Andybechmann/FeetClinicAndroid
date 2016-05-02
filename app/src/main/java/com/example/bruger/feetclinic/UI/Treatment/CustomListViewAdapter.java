@@ -58,12 +58,8 @@ public class CustomListViewAdapter extends BaseAdapter {
         TextView name = (TextView) view.findViewById(R.id.name);
         TextView price = (TextView) view.findViewById(R.id.price);
 
-
-
-        Treatment treatment = treatments.get(position);
-
-        name.setText(treatment.getName());
-        price.setText("price: " + treatment.getPrice());
+        name.setText(treatments.get(position).getName());
+        price.setText("price: " + treatments.get(position).getPrice());
 
         return view;
     }

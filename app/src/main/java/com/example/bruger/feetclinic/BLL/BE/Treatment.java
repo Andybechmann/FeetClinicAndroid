@@ -3,10 +3,10 @@ package com.example.bruger.feetclinic.BLL.BE;
 /**
  * Created by Bruger on 18-04-2016.
  */
-public class Treatment {
+public class Treatment implements IEntity{
 
     private String name;
-    private String id;
+    private String _id;
     private String description;
     private String imageUrl;
     private int price;
@@ -86,10 +86,10 @@ public class Treatment {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 }

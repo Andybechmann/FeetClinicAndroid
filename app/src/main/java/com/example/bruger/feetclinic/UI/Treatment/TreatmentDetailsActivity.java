@@ -7,11 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
-import com.example.bruger.feetclinic.BLL.TreatmentManager;
+import com.example.bruger.feetclinic.BLL.Manager.IManager;
+import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
     private EditText editPrice;
     private EditText editDuration;
     Treatment treatment;
-    TreatmentManager manager;
+
     Button btnCreate;
 
 
@@ -35,11 +35,12 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
 
 
+    IManager<Treatment> manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treatmentdetails);
-        manager = new TreatmentManager(this);
         treatment = new Treatment();
 
         // Get Views
@@ -59,11 +60,9 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
-
         if(id != null )
         {
-            treatment = getTreatment(id);
-            setUpFields(treatment);
+            populateTreatment(id);
         }
 
     }
@@ -79,7 +78,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
         try {
             manager.create(treatment);
         } catch (Exception e) {
-            AlertDialog alert = new AlertDialog.Builder(getApplicationContext()).create();
+            AlertDialog alert = new AlertDialog.Builder(this).create();
             alert.setMessage("TEST");
             alert.show();
         }
@@ -88,13 +87,41 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
     private void setUpFields(Treatment t) {
         txtName.setText(t.getName());
         txtDescription.setText(t.getDescription());
-        editPrice.setText(t.getPrice());
-        editDuration.setText(t.getDuration());
+        editPrice.setText(t.getPrice()+"");
+        editDuration.setText(t.getDuration()+"");
 
     }
 
-    private Treatment getTreatment(String id) {
-        return manager.get(id);
+    private void populateTreatment(String id) {
+        DownloadOne task = new DownloadOne(id);
+        Thread thread = new Thread(task);
+        thread.start();
     }
+
+
+    class DownloadOne implements Runnable{
+        String _id;
+        public DownloadOne(String id) {
+            _id = id;
+        }
+
+        @Override
+        public void run() {
+            manager = new TreatmentManager(TreatmentDetailsActivity.this);
+            try {
+                final Treatment t = manager.get(_id);
+                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUpFields(t);
+                    }
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
 
