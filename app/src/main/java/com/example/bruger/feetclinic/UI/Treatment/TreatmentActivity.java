@@ -47,6 +47,12 @@ public class TreatmentActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateTreatments();
+    }
+
     private void setUpAdapter(final ArrayList<Treatment> listOfTreatments){
         listView = (ListView)findViewById(R.id.list);
         customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), listOfTreatments);

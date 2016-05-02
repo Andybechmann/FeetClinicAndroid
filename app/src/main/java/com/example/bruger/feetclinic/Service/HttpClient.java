@@ -66,7 +66,7 @@ public class HttpClient {
         RequestBody body = RequestBody.create  (JSON,json);
         Request request = new Request.Builder()
                 .url(url)
-                .put(body)
+                .post(body)
                 .build();
         Response response = client.newCall(request).execute();
         return response;
