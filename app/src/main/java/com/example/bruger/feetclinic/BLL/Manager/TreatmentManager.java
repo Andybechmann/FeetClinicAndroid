@@ -52,7 +52,7 @@ public class TreatmentManager implements IManager<Treatment> {
 
     @Override
     public boolean delete(Treatment treatment) throws Exception {
-        return delete(treatment.get_Id());
+        return workingRepository.delete(treatment);
     }
 
     @Override

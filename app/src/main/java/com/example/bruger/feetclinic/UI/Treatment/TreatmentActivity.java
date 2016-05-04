@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
+import com.example.bruger.feetclinic.BLL.BE.TreatmentORM;
 import com.example.bruger.feetclinic.BLL.ISourceManager;
 import com.example.bruger.feetclinic.BLL.Manager.IManager;
 import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
@@ -76,7 +77,7 @@ public class TreatmentActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                startDetailsActivity(listOfTreatments.get(position).get_Id());
+                startDetailsActivity(listOfTreatments.get(position));
             }
         });
     }
@@ -88,9 +89,18 @@ public class TreatmentActivity extends AppCompatActivity {
 
     }
 
-    private void startDetailsActivity(String id)
+    private void startDetailsActivity(Treatment treatment)
     {
+
         Intent intent = new Intent(this,TreatmentDetailsActivity.class);
+        String id = null;
+        if (treatment != null) {
+            id = treatment.get_Id();
+            if (id == null) {
+                TreatmentORM treatmentORM = (TreatmentORM) treatment;
+                id = String.valueOf(treatmentORM.getId());
+            }
+        }
         intent.putExtra("id",id);
         startActivity(intent);
     }
@@ -125,7 +135,15 @@ public class TreatmentActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            synchronizer.synchronize();
+            if (synchronizer.synchronize()){
+                TreatmentActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        populateTreatments();
+                    }
+                });
+            }
+
         }
     }
 
