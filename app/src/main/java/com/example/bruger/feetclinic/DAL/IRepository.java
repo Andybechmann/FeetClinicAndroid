@@ -10,10 +10,8 @@ import java.util.ArrayList;
 /**
  * Created by Stepanenko on 27/04/2016.
  */
-public interface IRepository<T> {
-    ArrayList<T> getAll() throws Exception;
+public interface IRepository<T> extends IReadRepository<T> {
     T create(T t) throws Exception;
-    T get(String id) throws Exception;
     T update(T t) throws Exception;
     T update(T t,String id) throws Exception;
     boolean delete(T t) throws Exception;
