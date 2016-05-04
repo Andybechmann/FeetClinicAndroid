@@ -19,7 +19,7 @@ public class TreatmentSourceManager implements ISourceManager<Treatment> {
 
     public TreatmentSourceManager(ConnectivityManager cm) {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        isConnected = activeNetwork.isConnectedOrConnecting();
+        isConnected =  activeNetwork != null && activeNetwork.isConnected();
         instanceRepository(isConnected);
     }
 

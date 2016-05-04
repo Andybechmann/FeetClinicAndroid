@@ -131,13 +131,10 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment>,IRepository<
         if (_id == null){
             treatmentORM = (TreatmentORM) treatment;
             long id = treatmentORM.getId();
-            treatmentORM = getTreatmentOrm(String.valueOf(id));
             if (treatmentORM ==null){
                 throw new Exception("Treatment with given id not found");
             }
             treatmentORM.setModified(true);
-            treatmentORM.setDeleted(false);
-            treatmentORM.setCreated(false);
             SugarRecord.save(treatmentORM);
         }
         else {
@@ -182,6 +179,8 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment>,IRepository<
         if (treatmentORM == null){
             throw new Exception("Treatment with given id not found");
         }
+        treatmentORM.setModified(false);
+        treatmentORM.setCreated(false);
         treatmentORM.setDeleted(true);
         SugarRecord.save(treatmentORM);
         return true;

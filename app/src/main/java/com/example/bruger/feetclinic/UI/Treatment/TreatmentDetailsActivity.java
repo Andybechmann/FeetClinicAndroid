@@ -106,8 +106,6 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
     private void createNewTreatment() {
         Treatment treatment = new Treatment();
-
-
         treatment.setName(txtName.getText().toString());
         treatment.setDescription(txtDescription.getText().toString());
         treatment.setPrice(Integer.parseInt(editPrice.getText().toString()));
