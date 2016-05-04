@@ -5,6 +5,7 @@ import android.net.NetworkInfo;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.DAL.IRepository;
+import com.example.bruger.feetclinic.DAL.IUsyncRepository;
 import com.example.bruger.feetclinic.DAL.REST.TreatmentRest;
 import com.example.bruger.feetclinic.DAL.SQLite.TreatmentSqlite;
 
@@ -18,7 +19,8 @@ public class TreatmentSourceManager implements ISourceManager<Treatment> {
 
     public TreatmentSourceManager(ConnectivityManager cm) {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        instanceRepository(activeNetwork.isConnectedOrConnecting());
+        isConnected = activeNetwork.isConnectedOrConnecting();
+        instanceRepository(isConnected);
     }
 
     private void instanceRepository(boolean isConnection){
@@ -34,5 +36,15 @@ public class TreatmentSourceManager implements ISourceManager<Treatment> {
     @Override
     public IRepository<Treatment> getResource() {
         return activeRepository;
+    }
+
+    @Override
+    public boolean canSynchronize() {
+        return isConnected;
+    }
+
+    @Override
+    public IUsyncRepository<Treatment> getResourceToSynchronize() {
+        return new TreatmentSqlite();
     }
 }

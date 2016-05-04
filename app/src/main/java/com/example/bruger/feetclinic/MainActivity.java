@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronizer;
 import com.example.bruger.feetclinic.UI.Booking.BookingActivity;
 import com.example.bruger.feetclinic.UI.Therapist.TherapistActivity;
 import com.example.bruger.feetclinic.UI.Treatment.TreatmentActivity;

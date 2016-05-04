@@ -4,65 +4,68 @@ import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.BLL.ISourceManager;
 import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.DAL.IUsyncRepository;
-import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronize;
 
 import java.util.ArrayList;
 
 /**
  * Created by Stepanenko on 27/04/2016.
  */
-public class TreatmentSynchronizer implements ISynchronize<Treatment> {
+public class TreatmentSynchronizer implements ISynchronizer<Treatment> {
 
     ISourceManager<Treatment> sourceManager;
+    IRepository<Treatment> main;
+    IUsyncRepository<Treatment> slave;
     public TreatmentSynchronizer(ISourceManager<Treatment> manager) {
         sourceManager = manager;
+        main = sourceManager.getResource();
+        slave = sourceManager.getResourceToSynchronize();
     }
 
     @Override
-    public boolean synchronize(IRepository<Treatment> main, IUsyncRepository<Treatment> slave) {
+    public boolean synchronize() {
+        if (!sourceManager.canSynchronize()){
+            return false;
+        }
+        ArrayList<Treatment> treatments;
+        //create to remote DB
         try {
-            for (Treatment treatment : slave.getAllToDelete()){
-                if (!syncDeleted(treatment,main))
-                    return false;
+            treatments = slave.getAllCreated();
+            for (Treatment treatment: treatments) {
+                main.create(treatment);
+                slave.approveCreate(treatment);
             }
-
-            for (Treatment treatment : slave.getAllToCreate()){
-                if (!syncCreated(treatment, main))
-                    return false;
-            }
-
-            for (Treatment treatment : slave.getAllToUpdate()){
-                if (!syncUpdated(treatment, main))
-                    return false;
-            }
-
-
-            return true;
         } catch (Exception e) {
             return false;
         }
-    }
-
-    private boolean syncDeleted(Treatment treatment,IRepository<Treatment> main) throws Exception {
-        if (!main.delete(treatment.get_Id())){
+        //update to remote DB
+        try {
+            treatments = slave.getAllUpdated();
+            for (Treatment treatment: treatments) {
+                main.update(treatment);
+                slave.approveUpdate(treatment);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        //delete to remote DB
+        try {
+            treatments = slave.getAllDeleted();
+            for (Treatment treatment: treatments) {
+                if(main.delete(treatment))
+                slave.approveDelete(treatment);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        try {
+            slave.deleteAll();
+            slave.createAll(main.getAll());
+        } catch (Exception e) {
             return false;
         }
         return true;
+
     }
 
-    private boolean syncCreated(Treatment treatment, IRepository<Treatment> main){
-        try {
-            return main.create(treatment).get_Id() != null;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-    private boolean syncUpdated(Treatment treatment, IRepository<Treatment> main){
-        try {
-            main.update(treatment);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+
 }

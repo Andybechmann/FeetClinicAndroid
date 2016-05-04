@@ -1,7 +1,9 @@
 package com.example.bruger.feetclinic.UI.Treatment;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,9 +13,13 @@ import android.widget.ListView;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
+import com.example.bruger.feetclinic.BLL.ISourceManager;
 import com.example.bruger.feetclinic.BLL.Manager.IManager;
 import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
+import com.example.bruger.feetclinic.BLL.TreatmentSourceManager;
 import com.example.bruger.feetclinic.R;
+import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronizer;
+import com.example.bruger.feetclinic.Service.DBSynchronize.TreatmentSynchronizer;
 
 import java.util.ArrayList;
 
@@ -23,6 +29,7 @@ import java.util.ArrayList;
  */
 public class TreatmentActivity extends AppCompatActivity {
 
+    ISynchronizer<Treatment> synchronizer;
     private Button btnCreate;
     private CustomListViewAdapter customListViewAdapter;
     private ListView listView;
@@ -43,8 +50,17 @@ public class TreatmentActivity extends AppCompatActivity {
                 startDetailsActivity(null);
             }
         });
+        sync();
+    }
 
+    private void sync() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ISourceManager<Treatment> sourceManager = new TreatmentSourceManager(cm);
+        synchronizer = new TreatmentSynchronizer(sourceManager);
 
+        SynchronizeTask synchronizeTask = new SynchronizeTask(synchronizer);
+        Thread thread = new Thread(synchronizeTask);
+        thread.start();
     }
 
     @Override
@@ -100,4 +116,17 @@ public class TreatmentActivity extends AppCompatActivity {
             }
         }
     }
+
+    class SynchronizeTask implements Runnable{
+        ISynchronizer<Treatment> synchronizer;
+        public SynchronizeTask(ISynchronizer<Treatment> synchronizer) {
+            this.synchronizer = synchronizer;
+        }
+
+        @Override
+        public void run() {
+            synchronizer.synchronize();
+        }
+    }
+
 }

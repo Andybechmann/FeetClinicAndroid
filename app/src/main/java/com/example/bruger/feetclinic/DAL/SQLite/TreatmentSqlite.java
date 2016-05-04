@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Stepanenko on 27/04/2016.
  */
-public class TreatmentSqlite implements IUsyncRepository<Treatment> {
+public class TreatmentSqlite implements IUsyncRepository<Treatment>,IRepository<Treatment> {
     @Override
     public ArrayList<Treatment> getAllUsync() throws Exception {
         ArrayList<Treatment> treatments = new ArrayList<>();
@@ -24,7 +24,7 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment> {
     }
 
     @Override
-    public ArrayList<Treatment> getAllToDelete() throws Exception {
+    public ArrayList<Treatment> getAllDeleted() throws Exception {
         ArrayList<Treatment> treatments = new ArrayList<>();
         for(TreatmentORM treatmentInDb : SugarRecord.listAll(TreatmentORM.class)){
             if (treatmentInDb.isDeleted())
@@ -34,7 +34,7 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment> {
     }
 
     @Override
-    public ArrayList<Treatment> getAllToUpdate() throws Exception {
+    public ArrayList<Treatment> getAllUpdated() throws Exception {
         ArrayList<Treatment> treatments = new ArrayList<>();
         for(TreatmentORM treatmentInDb : SugarRecord.listAll(TreatmentORM.class)){
             if (treatmentInDb.isModified())
@@ -44,7 +44,7 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment> {
     }
 
     @Override
-    public ArrayList<Treatment> getAllToCreate() throws Exception {
+    public ArrayList<Treatment> getAllCreated() throws Exception {
         ArrayList<Treatment> treatments = new ArrayList<>();
         for(TreatmentORM treatmentInDb : SugarRecord.listAll(TreatmentORM.class)){
             if (treatmentInDb.isCreated())
@@ -54,10 +54,51 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment> {
     }
 
     @Override
+    public boolean approveCreate(Treatment treatment) throws Exception {
+        TreatmentORM treatmentORM = (TreatmentORM) treatment;
+        treatmentORM.setCreated(false);
+        SugarRecord.save(treatmentORM);
+        return true;
+    }
+
+    @Override
+    public boolean approveUpdate(Treatment treatment) throws Exception {
+        TreatmentORM treatmentORM = (TreatmentORM) treatment;
+        treatmentORM.setModified(false);
+        SugarRecord.save(treatmentORM);
+        return true;
+    }
+
+    @Override
+    public boolean approveDelete(Treatment treatment) throws Exception {
+        TreatmentORM treatmentORM = (TreatmentORM) treatment;
+        SugarRecord.delete(treatmentORM);
+        return true;
+    }
+
+    @Override
+    public boolean deleteAll() throws Exception {
+        SugarRecord.deleteAll(TreatmentORM.class);
+        return true;
+    }
+
+    @Override
+    public boolean createAll(ArrayList<Treatment> list) {
+        for (Treatment treatment:list) {
+            TreatmentORM treatmentORM = new TreatmentORM(treatment);
+            treatmentORM.setCreated(false);
+            treatmentORM.setModified(false);
+            treatmentORM.setDeleted(false);
+            SugarRecord.save(treatmentORM);
+        }
+        return true;
+    }
+
+    @Override
     public ArrayList<Treatment> getAll() throws Exception {
         ArrayList<Treatment> treatments = new ArrayList<>();
         for(TreatmentORM treatmentInDb : SugarRecord.listAll(TreatmentORM.class)){
-            if (treatmentInDb.isSynchronized())
+            if (!treatmentInDb.isDeleted())
             treatments.add(treatmentInDb);
         }
         return treatments;
@@ -73,6 +114,7 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment> {
         return treatment;
     }
 
+    //can find by int id or string id
     @Override
     public Treatment get(String id) throws Exception {
         Treatment treatment = getTreatmentOrm(id);
@@ -84,17 +126,33 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment> {
 
     @Override
     public Treatment update(Treatment treatment) throws Exception {
-        TreatmentORM treatmentORM = getTreatmentOrm(treatment.get_Id());
-        if (treatmentORM ==null){
-            throw new Exception("Treatment with given id not found");
+        String _id = treatment.get_Id(); //synchronized with remote DB
+        TreatmentORM treatmentORM;
+        if (_id == null){
+            treatmentORM = (TreatmentORM) treatment;
+            long id = treatmentORM.getId();
+            treatmentORM = getTreatmentOrm(String.valueOf(id));
+            if (treatmentORM ==null){
+                throw new Exception("Treatment with given id not found");
+            }
+            treatmentORM.setModified(true);
+            treatmentORM.setDeleted(false);
+            treatmentORM.setCreated(false);
+            SugarRecord.save(treatmentORM);
         }
-        long id = treatmentORM.getId();
-        treatmentORM = new TreatmentORM(treatment);
-        treatmentORM.setId(id);
-        treatmentORM.setModified(true);
-        treatmentORM.setDeleted(false);
-        treatmentORM.setCreated(false);
-        SugarRecord.save(treatmentORM);
+        else {
+            treatmentORM = getTreatmentOrm(_id);
+            if (treatmentORM ==null){
+                throw new Exception("Treatment with given id not found");
+            }
+            long id = treatmentORM.getId();
+            treatmentORM = new TreatmentORM(treatment);
+            treatmentORM.setId(id);
+            treatmentORM.setModified(true);
+            treatmentORM.setDeleted(false);
+            treatmentORM.setCreated(false);
+            SugarRecord.save(treatmentORM);
+        }
         return treatment;
     }
 
@@ -106,7 +164,16 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment> {
 
     @Override
     public boolean delete(Treatment treatment) throws Exception{
-        return delete(treatment.get_Id());
+        String _id = treatment.get_Id();
+        if (_id != null){
+            return delete(treatment.get_Id());
+        }
+        else {
+            TreatmentORM treatmentORM = (TreatmentORM) treatment;
+            long id = treatmentORM.getId();
+            return delete(String.valueOf(id));
+        }
+
     }
 
     @Override
@@ -122,8 +189,18 @@ public class TreatmentSqlite implements IUsyncRepository<Treatment> {
 
     private TreatmentORM getTreatmentOrm(String id) throws Exception{
         List<TreatmentORM> treatmentsInDb = SugarRecord.find(TreatmentORM.class,"_id = ?",id);
+        if (treatmentsInDb.size() == 0){
+            try {
+                treatmentsInDb.add(SugarRecord.findById(TreatmentORM.class, Integer.parseInt(id)));
+            }
+            catch (NumberFormatException e) {
+                return null;
+        }
+    }
         return treatmentsInDb.get(0);
     }
+
+
 
 
 }

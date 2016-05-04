@@ -7,6 +7,6 @@ import com.example.bruger.feetclinic.DAL.IUsyncRepository;
 /**
  * Created by Stepanenko on 27/04/2016.
  */
-public interface ISynchronize<T>{
-    boolean synchronize(IRepository<T> main, IUsyncRepository<T> slave);
+public interface ISynchronizer<T>{
+    boolean synchronize();
 }
