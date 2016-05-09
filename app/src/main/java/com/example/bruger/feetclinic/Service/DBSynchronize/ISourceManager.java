@@ -1,4 +1,4 @@
-package com.example.bruger.feetclinic.BLL;
+package com.example.bruger.feetclinic.Service.DBSynchronize;
 
 import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.DAL.IUsyncRepository;

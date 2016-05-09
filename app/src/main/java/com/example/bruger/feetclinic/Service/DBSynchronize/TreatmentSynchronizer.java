@@ -1,7 +1,6 @@
 package com.example.bruger.feetclinic.Service.DBSynchronize;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
-import com.example.bruger.feetclinic.BLL.ISourceManager;
 import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.DAL.IUsyncRepository;
 

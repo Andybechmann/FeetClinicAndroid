@@ -1,11 +1,9 @@
 package com.example.bruger.feetclinic.BLL.Manager;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
-import com.example.bruger.feetclinic.BLL.ISourceManager;
-import com.example.bruger.feetclinic.BLL.TreatmentSourceManager;
+import com.example.bruger.feetclinic.DAL.DALFactory;
 import com.example.bruger.feetclinic.DAL.IRepository;
 
 import java.util.ArrayList;
@@ -14,20 +12,12 @@ import java.util.ArrayList;
  * Created by Stepanenko on 27/04/2016.
  */
 public class TreatmentManager implements IManager<Treatment> {
-    ISourceManager<Treatment> sourceManager;
+    DALFactory dalFactory;
     IRepository<Treatment> workingRepository;
 
     public TreatmentManager(Context context) {
-        sourceManager = new TreatmentSourceManager((ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE));
-        workingRepository = sourceManager.getResource();
-    }
-
-    public TreatmentManager(ISourceManager<Treatment> sourceManager) {
-        this.sourceManager = sourceManager;
-    }
-
-    public TreatmentManager(IRepository<Treatment> workingRepository) {
-        this.workingRepository = workingRepository;
+        dalFactory = new DALFactory();
+        workingRepository = dalFactory.getTreatmentRepository();
     }
 
     @Override

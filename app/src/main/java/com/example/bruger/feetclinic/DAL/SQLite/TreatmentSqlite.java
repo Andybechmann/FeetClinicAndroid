@@ -13,15 +13,6 @@ import java.util.List;
  * Created by Stepanenko on 27/04/2016.
  */
 public class TreatmentSqlite implements IUsyncRepository<Treatment>,IRepository<Treatment> {
-    @Override
-    public ArrayList<Treatment> getAllUsync() throws Exception {
-        ArrayList<Treatment> treatments = new ArrayList<>();
-        for(TreatmentORM treatmentInDb : SugarRecord.listAll(TreatmentORM.class)){
-            if (!treatmentInDb.isSynchronized())
-                treatments.add(treatmentInDb);
-        }
-        return treatments;
-    }
 
     @Override
     public ArrayList<Treatment> getAllDeleted() throws Exception {

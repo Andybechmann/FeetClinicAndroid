@@ -6,7 +6,6 @@ import java.util.ArrayList;
  * Created by Stepanenko on 01/05/2016.
  */
 public interface IUsyncRepository<T>  {
-    ArrayList<T> getAllUsync() throws Exception;
     ArrayList<T> getAllDeleted() throws Exception;
     ArrayList<T> getAllUpdated() throws Exception;
     ArrayList<T> getAllCreated() throws Exception;

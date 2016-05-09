@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public interface IManager<T extends IEntity> extends IReadManager<T> {
 
     T create(T t) throws Exception;
-
     T update(T t) throws Exception;
     T update(T t,String id) throws Exception;
     boolean delete(T t) throws Exception;

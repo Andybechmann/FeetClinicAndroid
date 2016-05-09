@@ -31,4 +31,9 @@ public class Therapist implements IEntity{
     public String get_Id() {
         return _id;
     }
+
+    @Override
+    public void set_Id(String _id) {
+        this._id = _id;
+    }
 }

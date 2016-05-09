@@ -16,14 +16,12 @@ import android.widget.ListView;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
-import com.example.bruger.feetclinic.BLL.BE.TreatmentORM;
-import com.example.bruger.feetclinic.BLL.ISourceManager;
+import com.example.bruger.feetclinic.Service.DBSynchronize.ISourceManager;
 import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
-import com.example.bruger.feetclinic.BLL.Manager.IManager;
 import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
-import com.example.bruger.feetclinic.BLL.TreatmentSourceManager;
+import com.example.bruger.feetclinic.Service.DBSynchronize.TreatmentSourceManager;
 import com.example.bruger.feetclinic.R;
 import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronizer;
 import com.example.bruger.feetclinic.Service.DBSynchronize.TreatmentSynchronizer;

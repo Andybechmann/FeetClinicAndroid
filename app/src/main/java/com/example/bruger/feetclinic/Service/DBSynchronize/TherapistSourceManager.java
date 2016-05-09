@@ -1,4 +1,4 @@
-package com.example.bruger.feetclinic.BLL;
+package com.example.bruger.feetclinic.Service.DBSynchronize;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -8,6 +8,7 @@ import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.DAL.IUsyncRepository;
 import com.example.bruger.feetclinic.DAL.REST.TherapistRest;
 import com.example.bruger.feetclinic.DAL.SQLite.TherapistSqlite;
+import com.example.bruger.feetclinic.Service.DBSynchronize.ISourceManager;
 
 /**
  * Created by Bruger on 04-05-2016.

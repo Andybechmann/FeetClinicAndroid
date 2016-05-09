@@ -1,32 +1,51 @@
 package com.example.bruger.feetclinic.BLL.Manager;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
 
-import com.example.bruger.feetclinic.BLL.BE.IEntity;
 import com.example.bruger.feetclinic.BLL.BE.Therapist;
-import com.example.bruger.feetclinic.BLL.ISourceManager;
-import com.example.bruger.feetclinic.BLL.TherapistSourceManager;
-import com.example.bruger.feetclinic.DAL.IReadRepository;
+import com.example.bruger.feetclinic.DAL.DALFactory;
 import com.example.bruger.feetclinic.DAL.IRepository;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadFactory;
 
 /**
  * Created by Bruger on 04-05-2016.
  */
-public class TherapistManager implements IReadManager<Therapist> {
-    ISourceManager<Therapist> sourceManager;
-    IReadRepository<Therapist> workingRepository;
+public class TherapistManager implements IManager<Therapist> {
+    DALFactory dalFactory;
+    IRepository<Therapist> workingRepository;
 
 
     public TherapistManager(Context context)
      {
-         sourceManager = new TherapistSourceManager((ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE));
-         workingRepository = sourceManager.getResource();
+         dalFactory = new DALFactory();
+         workingRepository = dalFactory.getTherapistRepository();
     }
 
+    @Override
+    public Therapist create(Therapist therapist) throws Exception {
+        return workingRepository.create(therapist);
+    }
+
+    @Override
+    public Therapist update(Therapist therapist) throws Exception {
+        return workingRepository.update(therapist);
+    }
+
+    @Override
+    public Therapist update(Therapist therapist, String id) throws Exception {
+        return workingRepository.update(therapist,id);
+    }
+
+    @Override
+    public boolean delete(Therapist therapist) throws Exception {
+        return workingRepository.delete(therapist);
+    }
+
+    @Override
+    public boolean delete(String id) throws Exception {
+        return workingRepository.delete(id);
+    }
 
     @Override
     public ArrayList<Therapist> getAll() throws Exception {
@@ -35,6 +54,6 @@ public class TherapistManager implements IReadManager<Therapist> {
 
     @Override
     public Therapist get(String id) throws Exception {
-       return  workingRepository.get(id);
+        return workingRepository.get(id);
     }
 }

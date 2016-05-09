@@ -5,4 +5,5 @@ package com.example.bruger.feetclinic.BLL.BE;
  */
 public interface IEntity {
     String get_Id();
+    void set_Id(String _id);
 }
