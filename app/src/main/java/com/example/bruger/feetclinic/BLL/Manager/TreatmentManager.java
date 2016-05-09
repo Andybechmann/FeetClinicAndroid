@@ -7,8 +7,6 @@ import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.BLL.ISourceManager;
 import com.example.bruger.feetclinic.BLL.TreatmentSourceManager;
 import com.example.bruger.feetclinic.DAL.IRepository;
-import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronizer;
-import com.example.bruger.feetclinic.Service.DBSynchronize.TreatmentSynchronizer;
 
 import java.util.ArrayList;
 
@@ -22,6 +20,14 @@ public class TreatmentManager implements IManager<Treatment> {
     public TreatmentManager(Context context) {
         sourceManager = new TreatmentSourceManager((ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE));
         workingRepository = sourceManager.getResource();
+    }
+
+    public TreatmentManager(ISourceManager<Treatment> sourceManager) {
+        this.sourceManager = sourceManager;
+    }
+
+    public TreatmentManager(IRepository<Treatment> workingRepository) {
+        this.workingRepository = workingRepository;
     }
 
     @Override

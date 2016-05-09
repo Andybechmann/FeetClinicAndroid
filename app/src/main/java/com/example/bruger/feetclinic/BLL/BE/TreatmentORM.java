@@ -14,6 +14,7 @@ public class TreatmentORM extends Treatment {
     private boolean created;
     public TreatmentORM() {
     }
+
     public TreatmentORM(Treatment treatment){
         super(treatment);
     }
@@ -48,6 +49,14 @@ public class TreatmentORM extends Treatment {
 
     public void setCreated(boolean created) {
         this.created = created;
+    }
+
+    @Override
+    public String get_Id() {
+        if (super.get_Id() == null){
+            return String.valueOf(getId());
+        }
+        return super.get_Id();
     }
 
     public boolean isSynchronized(){

@@ -12,6 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
+import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
+import com.example.bruger.feetclinic.BLL.Manager.Async.CreateTask;
+import com.example.bruger.feetclinic.BLL.Manager.Async.DeleteTask;
+import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
+import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
+import com.example.bruger.feetclinic.BLL.Manager.Async.UpdateTask;
 import com.example.bruger.feetclinic.BLL.Manager.IManager;
 import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
@@ -19,20 +25,20 @@ import com.example.bruger.feetclinic.R;
 /**
  * Created by Bruger on 27-04-2016.
  */
-public class TreatmentDetailsActivity extends AppCompatActivity {
+public class TreatmentDetailsActivity extends AppCompatActivity implements OnTaskCompleteListener<Treatment> {
 
     private TextView txtName;
     private TextView txtDescription;
     private EditText editPrice;
     private EditText editDuration;
-    Treatment treatment;
-    String treatmentId;
-    Button btnCreate;
-    Button btnDelete;
+    private Treatment treatment;
+    private String treatmentId;
+    private Button btnCreate;
+    private Button btnDelete;
 
-    AlertDialog alert;
+    private AlertDialog alert;
 
-    IManager<Treatment> manager;
+    private IManager<Treatment> manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +73,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteTreatment();
+                deleteTreatment(treatment);
             }
         });
 
@@ -79,29 +85,19 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
 
     }
 
-    private void deleteTreatment() {
-        DeleteOne delete = new DeleteOne(treatment);
-        Thread thread = new Thread(delete);
-        thread.start();
+    private void deleteTreatment(Treatment treatment) {
+        DeleteTask<Treatment> deleteTask = new DeleteTask<Treatment>(this,treatment);
+        deleteTask.execute(new TreatmentManager(this));
     }
 
     private void updateTreatment() {
-
-
-
         treatment.setName(txtName.getText().toString());
         treatment.setDescription(txtDescription.getText().toString());
         treatment.setPrice(Integer.parseInt(editPrice.getText().toString()));
         treatment.setDuration(Integer.parseInt(editDuration.getText().toString()));
 
-        UpdateOne updateOne = new UpdateOne(treatment);
-        Thread thread = new Thread(updateOne);
-        thread.start();
-    }
-
-    private void updateTreatmentUI(Treatment t) {
-        treatment = t;
-        setUpFields(t);
+        UpdateTask<Treatment> updateTask = new UpdateTask<Treatment>(this,treatment);
+        updateTask.execute(new TreatmentManager(this));
     }
 
     private void createNewTreatment() {
@@ -111,9 +107,8 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
         treatment.setPrice(Integer.parseInt(editPrice.getText().toString()));
         treatment.setDuration(Integer.parseInt(editDuration.getText().toString()));
 
-        CreateOne createOne = new CreateOne(treatment);
-        Thread thread = new Thread(createOne);
-        thread.start();
+        CreateTask<Treatment> createTask = new CreateTask<>(this,treatment);
+        createTask.execute(new TreatmentManager(this));
     }
 
     private void setUpFields(Treatment t) {
@@ -131,16 +126,8 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
         editDuration.setText("");
     }
 
-    private void okToast(String msg)
-    {
-        Toast.makeText(this,msg, Toast.LENGTH_SHORT).show();
-        cleanUpFields();
-    }
-
-
     private void alertDialog(String message)
     {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message)
                 .setCancelable(false)
@@ -155,132 +142,27 @@ public class TreatmentDetailsActivity extends AppCompatActivity {
     }
 
     private void populateTreatment(String id) {
-        DownloadOne task = new DownloadOne(id);
-        Thread thread = new Thread(task);
-        thread.start();
+        TreatmentManager manager = new TreatmentManager(this);
+        DownloadTask<Treatment> downloadTask = new DownloadTask<Treatment>(this,id);
+        downloadTask.execute(manager);
     }
 
-
-    class DownloadOne implements Runnable{
-        String _id;
-        public DownloadOne(String id) {
-            _id = id;
-        }
-
-        @Override
-        public void run() {
-            manager = new TreatmentManager(TreatmentDetailsActivity.this);
-            try {
-                final Treatment t = manager.get(_id);
-                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateTreatmentUI(t);
-                    }
-                });
-
-            } catch (final Exception e) {
-                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        alertDialog("found none ! " + e.toString());
-                    }
-                });
-
+    @Override
+    public void onTaskComplete(AsyncTaskResult<Treatment> result) {
+        if (result.isSuccessful()){
+            if (result.getResults().size() == 0){
+                cleanUpFields();
+                finish();
             }
-        }
-    }
-
-
-
-    class CreateOne implements Runnable{
-        Treatment treatment;
-        public CreateOne(Treatment treatment) {
-            this.treatment = treatment;
-        }
-
-        @Override
-        public void run() {
-            manager = new TreatmentManager(TreatmentDetailsActivity.this);
-            try {
-                treatment = manager.create(treatment);
-                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        okToast("Treatment has been saved! ");
-                        updateTreatmentUI(treatment);
-                    }
-                });
-            } catch (final Exception e) {
-                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        alertDialog("Has not been created!! " + e.toString());
-                    }
-                });
+            else {
+                treatment = result.getResults().get(0);
+                Toast.makeText(this,"Succeful",Toast.LENGTH_SHORT).show();
+                setUpFields(result.getResults().get(0));
             }
+        } else {
+            alertDialog(result.getException().getMessage());
+            //pop up dialog med error
         }
     }
-    class UpdateOne implements Runnable{
-        Treatment treatment;
-        public UpdateOne(Treatment treatment) {
-            this.treatment = treatment;
-        }
-
-        @Override
-        public void run() {
-            manager = new TreatmentManager(TreatmentDetailsActivity.this);
-            try {
-                treatment = manager.update(treatment);
-                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        okToast("Treatment has been saved! ");
-                        updateTreatmentUI(treatment);
-                    }
-                });
-            } catch (final Exception e) {
-                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        alertDialog("Has not been Changed!! " + e.toString());
-                    }
-                });
-            }
-        }
-    }
-
-    class DeleteOne implements Runnable{
-        Treatment treatment;
-        boolean succes;
-        public DeleteOne(Treatment treatment) {
-            this.treatment = treatment;
-        }
-
-        @Override
-        public void run() {
-            manager = new TreatmentManager(TreatmentDetailsActivity.this);
-            try {
-                succes = manager.delete(treatment);
-                treatment = new Treatment();
-                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        okToast("Treatment has been deletet");
-                        updateTreatmentUI(treatment);
-                        finish();
-                    }
-                });
-            } catch (final Exception e) {
-                TreatmentDetailsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        alertDialog("Has not been Deletet!! " + e.toString());
-                    }
-                });
-            }
-        }
-    }
-
 }
 
