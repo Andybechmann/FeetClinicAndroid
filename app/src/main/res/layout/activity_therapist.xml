@@ -5,5 +5,15 @@
     android:background="@drawable/construction">
 
 
+    <ListView
+        android:id="@+id/list"
+        android:divider="#c43cff00"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
+        />
 
 </LinearLayout>
