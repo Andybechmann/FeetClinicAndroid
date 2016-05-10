@@ -7,6 +7,6 @@ import com.example.bruger.feetclinic.DAL.IUsyncRepository;
 /**
  * Created by Stepanenko on 27/04/2016.
  */
-public interface ISynchronizer<T>{
-    boolean synchronize();
+public interface ISynchronizer<T extends SuperT, SuperT >{
+    boolean synchronize(IRepository<SuperT> main, IUsyncRepository<T,SuperT> local);
 }

@@ -87,7 +87,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
 
     private void deleteTreatment(Treatment treatment) {
         DeleteTask<Treatment> deleteTask = new DeleteTask<Treatment>(this,treatment);
-        deleteTask.execute(new TreatmentManager(this));
+        deleteTask.execute(new TreatmentManager());
     }
 
     private void updateTreatment() {
@@ -97,7 +97,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
         treatment.setDuration(Integer.parseInt(editDuration.getText().toString()));
 
         UpdateTask<Treatment> updateTask = new UpdateTask<Treatment>(this,treatment);
-        updateTask.execute(new TreatmentManager(this));
+        updateTask.execute(new TreatmentManager());
     }
 
     private void createNewTreatment() {
@@ -108,7 +108,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
         treatment.setDuration(Integer.parseInt(editDuration.getText().toString()));
 
         CreateTask<Treatment> createTask = new CreateTask<>(this,treatment);
-        createTask.execute(new TreatmentManager(this));
+        createTask.execute(new TreatmentManager());
     }
 
     private void setUpFields(Treatment t) {
@@ -142,7 +142,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
     }
 
     private void populateTreatment(String id) {
-        TreatmentManager manager = new TreatmentManager(this);
+        TreatmentManager manager = new TreatmentManager();
         DownloadTask<Treatment> downloadTask = new DownloadTask<Treatment>(this,id);
         downloadTask.execute(manager);
     }

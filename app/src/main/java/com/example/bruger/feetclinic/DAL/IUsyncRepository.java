@@ -5,14 +5,14 @@ import java.util.ArrayList;
 /**
  * Created by Stepanenko on 01/05/2016.
  */
-public interface IUsyncRepository<T>  {
+public interface IUsyncRepository<T extends SuperT,SuperT> extends IRepository<SuperT>  {
     ArrayList<T> getAllDeleted() throws Exception;
     ArrayList<T> getAllUpdated() throws Exception;
     ArrayList<T> getAllCreated() throws Exception;
 
-    boolean approveCreate(T t) throws Exception;
-    boolean approveUpdate(T t) throws Exception;
-    boolean approveDelete(T t) throws Exception;
-    boolean deleteAll() throws Exception;
-    boolean createAll(ArrayList<T> list) throws Exception;
+    boolean approveCreate(T t) ;
+    boolean approveUpdate(T t) ;
+    boolean approveDelete(T t) ;
+    boolean deleteAll(ArrayList<SuperT> list) ;
+    boolean createAll(ArrayList<SuperT> list) ;
 }

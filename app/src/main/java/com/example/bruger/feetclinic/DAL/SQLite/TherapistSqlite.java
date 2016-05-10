@@ -13,19 +13,47 @@ import java.util.ArrayList;
 /**
  * Created by Bruger on 04-05-2016.
  */
-public class TherapistSqlite implements IRepository<Therapist>,IUsyncRepository<Therapist> {
+public class TherapistSqlite implements IUsyncRepository<TherapistORM,Therapist> {
+
+
     @Override
-    public ArrayList<Therapist> getAll() throws Exception {
-        ArrayList<Therapist> therapists = new ArrayList<>();
-        for(TherapistORM therapistInDb : SugarRecord.listAll(TherapistORM.class)){
-                therapists.add(therapistInDb);
-        }
-        return therapists;
+    public ArrayList<TherapistORM> getAllDeleted() throws Exception {
+        return null;
     }
 
     @Override
-    public Therapist get(String id) throws Exception {
+    public ArrayList<TherapistORM> getAllUpdated() throws Exception {
         return null;
+    }
+
+    @Override
+    public ArrayList<TherapistORM> getAllCreated() throws Exception {
+        return null;
+    }
+
+    @Override
+    public boolean approveCreate(TherapistORM therapistORM) {
+        return false;
+    }
+
+    @Override
+    public boolean approveUpdate(TherapistORM therapistORM) {
+        return false;
+    }
+
+    @Override
+    public boolean approveDelete(TherapistORM therapistORM) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteAll(ArrayList<Therapist> list) {
+        return false;
+    }
+
+    @Override
+    public boolean createAll(ArrayList<Therapist> list) {
+        return false;
     }
 
     @Override
@@ -54,42 +82,12 @@ public class TherapistSqlite implements IRepository<Therapist>,IUsyncRepository<
     }
 
     @Override
-    public ArrayList<Therapist> getAllDeleted() throws Exception {
+    public ArrayList<Therapist> getAll() throws Exception {
         return null;
     }
 
     @Override
-    public ArrayList<Therapist> getAllUpdated() throws Exception {
+    public Therapist get(String id) throws Exception {
         return null;
-    }
-
-    @Override
-    public ArrayList<Therapist> getAllCreated() throws Exception {
-        return null;
-    }
-
-    @Override
-    public boolean approveCreate(Therapist therapist) throws Exception {
-        return false;
-    }
-
-    @Override
-    public boolean approveUpdate(Therapist therapist) throws Exception {
-        return false;
-    }
-
-    @Override
-    public boolean approveDelete(Therapist therapist) throws Exception {
-        return false;
-    }
-
-    @Override
-    public boolean deleteAll() throws Exception {
-        return false;
-    }
-
-    @Override
-    public boolean createAll(ArrayList<Therapist> list) throws Exception {
-        return false;
     }
 }

@@ -24,7 +24,6 @@ public class ConnectService {
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
             int exitValue = ipProcess.waitFor();
             return (exitValue == 0);
-
         } catch (Exception e) {
             return false;
         }

@@ -18,6 +18,15 @@ public class TreatmentORM extends Treatment {
     public TreatmentORM(Treatment treatment){
         super(treatment);
     }
+    public void update(Treatment treatment){
+        this.name = treatment.getName();
+        this._id = treatment.get_Id();
+        this.description = treatment.getDescription();
+        this.imageUrl = treatment.getImageUrl();
+        this.price = treatment.getPrice();
+        this.duration = treatment.getDuration();
+        this.type = treatment.getType();
+    }
 
     public Long getId() {
         return id;

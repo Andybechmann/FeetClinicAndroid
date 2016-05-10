@@ -16,15 +16,11 @@ import android.widget.ListView;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
-import com.example.bruger.feetclinic.Service.DBSynchronize.ISourceManager;
 import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
 import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
-import com.example.bruger.feetclinic.Service.DBSynchronize.TreatmentSourceManager;
 import com.example.bruger.feetclinic.R;
-import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronizer;
-import com.example.bruger.feetclinic.Service.DBSynchronize.TreatmentSynchronizer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +31,6 @@ import java.util.ArrayList;
  */
 public class TreatmentActivity extends AppCompatActivity implements OnTaskCompleteListener<Treatment> {
 
-    ISynchronizer<Treatment> synchronizer;
     private Button btnCreate;
     private CustomListViewAdapter customListViewAdapter;
     private ListView listView;
@@ -93,13 +88,11 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     }
 
     private void sync() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        ISourceManager<Treatment> sourceManager = new TreatmentSourceManager(cm);
-        synchronizer = new TreatmentSynchronizer(sourceManager);
+      //  ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        SynchronizeTask synchronizeTask = new SynchronizeTask(synchronizer);
-        Thread thread = new Thread(synchronizeTask);
-        thread.start();
+        //SynchronizeTask synchronizeTask = new SynchronizeTask(synchronizer);
+        //Thread thread = new Thread(synchronizeTask);
+        //thread.start();
     }
 
     @Override
@@ -134,8 +127,9 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     }
 
     private void populateTreatments(){
+        TreatmentManager manager = new TreatmentManager();
         DownloadTask<Treatment> downloadTask = new DownloadTask(this);
-        downloadTask.execute(new TreatmentManager(this));
+        downloadTask.execute(manager);
     }
 
     private void startDetailsActivity(Treatment treatment)
@@ -162,24 +156,5 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     }
 
 
-    class SynchronizeTask implements Runnable{
-        ISynchronizer<Treatment> synchronizer;
-        public SynchronizeTask(ISynchronizer<Treatment> synchronizer) {
-            this.synchronizer = synchronizer;
-        }
-
-        @Override
-        public void run() {
-            if (synchronizer.synchronize()){
-                TreatmentActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        populateTreatments();
-                    }
-                });
-            }
-
-        }
-    }
 
 }

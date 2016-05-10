@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.DAL.DALFactory;
 import com.example.bruger.feetclinic.DAL.IRepository;
+import com.example.bruger.feetclinic.Service.ConnectService;
 
 import java.util.ArrayList;
 
@@ -14,10 +15,12 @@ import java.util.ArrayList;
 public class TreatmentManager implements IManager<Treatment> {
     DALFactory dalFactory;
     IRepository<Treatment> workingRepository;
+    ConnectService connectService;
 
-    public TreatmentManager(Context context) {
+    public TreatmentManager() {
+        connectService = new ConnectService();
         dalFactory = new DALFactory();
-        workingRepository = dalFactory.getTreatmentRepository();
+        workingRepository = dalFactory.getTreatmentRepository(connectService.isOnline());
     }
 
     @Override

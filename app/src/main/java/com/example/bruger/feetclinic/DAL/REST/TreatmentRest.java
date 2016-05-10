@@ -18,12 +18,13 @@ public class TreatmentRest implements IRepository<Treatment> {
     private GsonService<Treatment> gsonService;
 
     public TreatmentRest(String url) {
-        this();
         this.URL = url;
+        httpClient = new HttpClient(URL);
+        gsonService = new GsonService(Treatment.class);
     }
     public TreatmentRest() {
         httpClient = new HttpClient(URL);
-        gsonService = new GsonService<Treatment>(Treatment.class);
+        gsonService = new GsonService(Treatment.class);
     }
 
     @Override

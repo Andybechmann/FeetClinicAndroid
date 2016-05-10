@@ -14,16 +14,12 @@ import java.io.IOException;
  * Created by Stepanenko on 09/05/2016.
  */
 public class DALFactory {
-    ConnectService connectService;
+
     IRepository<Treatment> treatmentRepository;
     IRepository<Therapist> therapistRepository;
 
-    public DALFactory() {
-        ConnectService connectService = new ConnectService();
-    }
-
-    public IRepository<Treatment> getTreatmentRepository() {
-        if (connectService.isOnline()) {
+    public IRepository<Treatment> getTreatmentRepository(boolean online) {
+        if (online) {
             treatmentRepository = new TreatmentRest();
         } else {
             treatmentRepository = new TreatmentSqlite();
@@ -31,8 +27,8 @@ public class DALFactory {
         return treatmentRepository;
     }
 
-    public IRepository<Therapist> getTherapistRepository(){
-        if (connectService.isOnline()) {
+    public IRepository<Therapist> getTherapistRepository(boolean online){
+        if (online) {
             therapistRepository = new TherapistRest();
         } else {
             therapistRepository = new TherapistSqlite();
