@@ -8,11 +8,12 @@ import java.util.ArrayList;
 /**
  * Created by Stepanenko on 10/05/2016.
  */
-public class Synchronizer<T extends SuperT, SuperT> implements ISynchronizer<T,SuperT>{
+public class Synchronizer implements ISynchronizer{
 
 
     @Override
-    public boolean synchronize(IRepository<SuperT> main, IUsyncRepository<T, SuperT> local) {
+    public <T extends SuperT, SuperT> boolean synchronize(IRepository<SuperT> main, IUsyncRepository<T, SuperT> local)
+     {
         ArrayList<T> objectsToSynchronize;
 
         //create to remote DB

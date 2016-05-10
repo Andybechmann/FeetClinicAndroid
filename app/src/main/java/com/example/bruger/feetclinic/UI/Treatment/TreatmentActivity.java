@@ -3,11 +3,13 @@ package com.example.bruger.feetclinic.UI.Treatment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,8 +23,9 @@ import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
 import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
+import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronizer;
+import com.example.bruger.feetclinic.Service.DBSynchronize.Synchronizer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -34,19 +37,18 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     private Button btnCreate;
     private CustomListViewAdapter customListViewAdapter;
     private ListView listView;
-    ArrayList<Treatment> treatments;
 
+    private boolean isSyncronized = false;
     private boolean isReceiverRegistered = false;
-    private boolean isConnected = false;
+
+
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             NetworkInfo info = getNetworkInfo(context);
             if (info != null && info.isConnected()) {
-                isConnected = true;
-                sync();
+
             } else {
-                isConnected = false;
             }
         }
     };
@@ -56,26 +58,11 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connManager.getActiveNetworkInfo();
     }
-    public boolean isOnline() {
-
-        Runtime runtime = Runtime.getRuntime();
-        try {
-
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-            int     exitValue = ipProcess.waitFor();
-            return (exitValue == 0);
-
-        } catch (IOException e)          { e.printStackTrace(); }
-        catch (InterruptedException e) { e.printStackTrace(); }
-
-        return false;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treatment);
-        treatments = new ArrayList<>();
         populateTreatments();
         btnCreate = (Button)findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -87,13 +74,7 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
         sync();
     }
 
-    private void sync() {
-      //  ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        //SynchronizeTask synchronizeTask = new SynchronizeTask(synchronizer);
-        //Thread thread = new Thread(synchronizeTask);
-        //thread.start();
-    }
 
     @Override
     protected void onResume() {
@@ -114,16 +95,21 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
             }
     }
 
-    private void setUpAdapter(final ArrayList<Treatment> listOfTreatments){
-        listView = (ListView)findViewById(R.id.list);
-        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), listOfTreatments);
-        listView.setAdapter(customListViewAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                startDetailsActivity(listOfTreatments.get(position));
-            }
-        });
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sync();
+    }
+
+    @Override
+    public void onTaskComplete(AsyncTaskResult<Treatment> result) {
+        if (result.isSuccessful()){
+            update(result.getResults());
+        }
+        else {
+            showDialog("Apps can not work normally, problems with Database " + result.getException().getMessage() + "  Try again later");
+            finish();
+        }
     }
 
     private void populateTreatments(){
@@ -132,9 +118,13 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
         downloadTask.execute(manager);
     }
 
+    private void sync() {
+
+
+    }
+
     private void startDetailsActivity(Treatment treatment)
     {
-
         Intent intent = new Intent(this,TreatmentDetailsActivity.class);
         String id = null;
         if (treatment != null) {
@@ -147,14 +137,28 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     public void update(ArrayList<Treatment> arrTreatments) {
         setUpAdapter(arrTreatments);
     }
-
-    @Override
-    public void onTaskComplete(AsyncTaskResult<Treatment> result) {
-        if (result.isSuccessful()){
-            update(result.getResults());
-        }
+    private void setUpAdapter(final ArrayList<Treatment> listOfTreatments){
+        listView = (ListView)findViewById(R.id.list);
+        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), listOfTreatments);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                startDetailsActivity(listOfTreatments.get(position));
+            }
+        });
+        listView.setAdapter(customListViewAdapter);
     }
 
-
-
+    private void showDialog(String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }
