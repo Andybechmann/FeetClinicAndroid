@@ -62,6 +62,7 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treatment);
+        bllFacade = new BllFacade();
         populateTreatments();
         btnCreate = (Button)findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +71,6 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
                 startDetailsActivity(null);
             }
         });
-        bllFacade = new BllFacade();
         sync();
     }
 
@@ -83,7 +83,6 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
             isReceiverRegistered = true;
             registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE")); // IntentFilter to wifi state change is "android.net.wifi.STATE_CHANGE"
         }
-        //populateTreatments();
     }
 
     @Override
@@ -117,11 +116,6 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
         downloadTask.execute( bllFacade.getTreatmentManager());
     }
 
-    private void sync() {
-        Thread thread = new Thread(new Sync());
-        thread.start();
-
-    }
 
     private void startDetailsActivity(Treatment treatment)
     {
@@ -161,6 +155,12 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
         AlertDialog alert = builder.create();
         alert.show();
     }
+    
+    private void sync() {
+        Thread thread = new Thread(new Sync());
+        thread.start();
+    }
+
     class Sync implements Runnable{
 
         @Override
