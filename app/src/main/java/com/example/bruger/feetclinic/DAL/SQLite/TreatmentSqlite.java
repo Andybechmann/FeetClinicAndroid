@@ -83,11 +83,16 @@ public class TreatmentSqlite implements IUsyncRepository<TreatmentORM,Treatment>
         }
     }
 
+
     @Override
     public boolean createAll(ArrayList<Treatment> list) {
         for (Treatment treatment:list){
             try {
-                create(treatment);
+                TreatmentORM treatmentORM = new TreatmentORM(treatment);
+                treatmentORM.setDeleted(false);
+                treatmentORM.setModified(false);
+                treatmentORM.setCreated(false);
+                SugarRecord.save(treatmentORM);
             } catch (Exception e) {
                 return false;
             }

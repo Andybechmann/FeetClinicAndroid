@@ -51,6 +51,7 @@ public class TherapistSqlite implements IUsyncRepository<TherapistORM,Therapist>
         return false;
     }
 
+
     @Override
     public boolean createAll(ArrayList<Therapist> list) {
         return false;

@@ -1,5 +1,6 @@
 package com.example.bruger.feetclinic.Service.DBSynchronize;
 
+import com.example.bruger.feetclinic.BLL.BE.IEntity;
 import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.DAL.IUsyncRepository;
 
@@ -12,7 +13,7 @@ public class Synchronizer implements ISynchronizer{
 
 
     @Override
-    public <T extends SuperT, SuperT> boolean synchronize(IRepository<SuperT> main, IUsyncRepository<T, SuperT> local)
+    public <T extends SuperT, SuperT extends IEntity> boolean synchronize(IRepository<SuperT> main, IUsyncRepository<T, SuperT> local)
      {
         ArrayList<T> objectsToSynchronize;
 
@@ -20,7 +21,9 @@ public class Synchronizer implements ISynchronizer{
         try {
             objectsToSynchronize = local.getAllCreated();
             for (T t: objectsToSynchronize) {
-                main.create(t);
+                t.set_Id(null);
+                SuperT createdT = main.create(t);
+                t.set_Id(createdT.get_Id());
                 local.approveCreate(t);
             }
         } catch (Exception e) {
@@ -49,6 +52,7 @@ public class Synchronizer implements ISynchronizer{
 
 
         try {
+
             ArrayList<SuperT> mainDbList = main.getAll();
             ArrayList<SuperT> localDbList  = local.getAll();
 
@@ -59,7 +63,10 @@ public class Synchronizer implements ISynchronizer{
             mainDbList.removeAll(localDbList);
 
             local.createAll(mainDbList);
-
+/*
+            local.deleteAll();
+            local.createAll(main.getAll());
+            */
         } catch (Exception e) {
             return false;
         }
