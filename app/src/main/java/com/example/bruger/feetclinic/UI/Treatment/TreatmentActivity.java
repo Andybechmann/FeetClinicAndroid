@@ -18,13 +18,11 @@ import android.widget.ListView;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 
+import com.example.bruger.feetclinic.BLL.BllFacade;
 import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
-import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
-import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronizer;
-import com.example.bruger.feetclinic.Service.DBSynchronize.Synchronizer;
 
 import java.util.ArrayList;
 
@@ -40,6 +38,7 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
 
     private boolean isSyncronized = false;
     private boolean isReceiverRegistered = false;
+    BllFacade bllFacade;
 
 
 
@@ -63,6 +62,7 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treatment);
+        bllFacade = new BllFacade();
         populateTreatments();
         btnCreate = (Button)findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +83,6 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
             isReceiverRegistered = true;
             registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE")); // IntentFilter to wifi state change is "android.net.wifi.STATE_CHANGE"
         }
-        populateTreatments();
     }
 
     @Override
@@ -113,15 +112,10 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     }
 
     private void populateTreatments(){
-        TreatmentManager manager = new TreatmentManager();
         DownloadTask<Treatment> downloadTask = new DownloadTask(this);
-        downloadTask.execute(manager);
+        downloadTask.execute( bllFacade.getTreatmentManager());
     }
 
-    private void sync() {
-
-
-    }
 
     private void startDetailsActivity(Treatment treatment)
     {
@@ -160,5 +154,18 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+    
+    private void sync() {
+        Thread thread = new Thread(new Sync());
+        thread.start();
+    }
+
+    class Sync implements Runnable{
+
+        @Override
+        public void run() {
+            bllFacade.getTherapistManager().synchronize();
+        }
     }
 }

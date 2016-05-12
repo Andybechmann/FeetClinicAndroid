@@ -1,9 +1,7 @@
 package com.example.bruger.feetclinic.BLL.Manager;
 
-import android.content.Context;
-
 import com.example.bruger.feetclinic.BLL.BE.Therapist;
-import com.example.bruger.feetclinic.DAL.DALFactory;
+import com.example.bruger.feetclinic.DAL.DALFacade;
 import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.Service.ConnectService;
 
@@ -13,7 +11,7 @@ import java.util.ArrayList;
  * Created by Bruger on 04-05-2016.
  */
 public class TherapistManager implements IManager<Therapist> {
-    DALFactory dalFactory;
+    DALFacade dalFactory;
     IRepository<Therapist> workingRepository;
     ConnectService connectService;
 
@@ -21,7 +19,7 @@ public class TherapistManager implements IManager<Therapist> {
     public TherapistManager()
      {
          connectService = new ConnectService();
-         dalFactory = new DALFactory();
+         dalFactory = new DALFacade();
          workingRepository = dalFactory.getTherapistRepository(connectService.isOnline());
     }
 
@@ -48,6 +46,11 @@ public class TherapistManager implements IManager<Therapist> {
     @Override
     public boolean delete(String id) throws Exception {
         return workingRepository.delete(id);
+    }
+
+    @Override
+    public boolean synchronize() {
+        return false;
     }
 
     @Override

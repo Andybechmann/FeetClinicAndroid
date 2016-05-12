@@ -102,4 +102,23 @@ public class Treatment implements IEntity{
     public void set_Id(String id) {
         this._id = id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Treatment)) return false;
+
+        Treatment treatment = (Treatment) o;
+
+        if (!getName().equals(treatment.getName())) return false;
+        return !(_id != null ? !_id.equals(treatment._id) : treatment._id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName().hashCode();
+        result = 31 * result + (_id != null ? _id.hashCode() : 0);
+        return result;
+    }
 }

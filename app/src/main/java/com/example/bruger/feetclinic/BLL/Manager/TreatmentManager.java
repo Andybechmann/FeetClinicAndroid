@@ -1,11 +1,11 @@
 package com.example.bruger.feetclinic.BLL.Manager;
 
-import android.content.Context;
-
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
-import com.example.bruger.feetclinic.DAL.DALFactory;
+import com.example.bruger.feetclinic.DAL.DALFacade;
 import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.Service.ConnectService;
+import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronizer;
+import com.example.bruger.feetclinic.Service.DBSynchronize.Synchronizer;
 
 import java.util.ArrayList;
 
@@ -13,14 +13,15 @@ import java.util.ArrayList;
  * Created by Stepanenko on 27/04/2016.
  */
 public class TreatmentManager implements IManager<Treatment> {
-    DALFactory dalFactory;
+    DALFacade dalFacade;
     IRepository<Treatment> workingRepository;
     ConnectService connectService;
+    ISynchronizer synchronizer;
 
     public TreatmentManager() {
         connectService = new ConnectService();
-        dalFactory = new DALFactory();
-        workingRepository = dalFactory.getTreatmentRepository(connectService.isOnline());
+        dalFacade = new DALFacade();
+        workingRepository = dalFacade.getTreatmentRepository(connectService.isOnline());
     }
 
     @Override
@@ -57,5 +58,14 @@ public class TreatmentManager implements IManager<Treatment> {
     @Override
     public boolean delete(String id) throws Exception {
         return workingRepository.delete(id);
+    }
+
+    @Override
+    public boolean synchronize() {
+        if (synchronizer == null){
+            synchronizer = new Synchronizer();
+        }
+        boolean isOk = synchronizer.synchronize(dalFacade.getTreatmentRepository(true), dalFacade.getTreatmentUsyncRepository());
+        return isOk;
     }
 }

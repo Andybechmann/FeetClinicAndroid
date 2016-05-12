@@ -14,4 +14,6 @@ public interface IManager<T extends IEntity> extends IReadManager<T> {
     T update(T t,String id) throws Exception;
     boolean delete(T t) throws Exception;
     boolean delete(String id) throws Exception;
+
+    boolean synchronize();
 }

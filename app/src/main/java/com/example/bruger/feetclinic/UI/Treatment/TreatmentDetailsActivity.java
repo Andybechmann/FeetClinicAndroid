@@ -12,14 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
+import com.example.bruger.feetclinic.BLL.BllFacade;
 import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
 import com.example.bruger.feetclinic.BLL.Manager.Async.CreateTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DeleteTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
 import com.example.bruger.feetclinic.BLL.Manager.Async.UpdateTask;
-import com.example.bruger.feetclinic.BLL.Manager.IManager;
-import com.example.bruger.feetclinic.BLL.Manager.TreatmentManager;
 import com.example.bruger.feetclinic.R;
 
 /**
@@ -38,8 +37,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
 
     private AlertDialog alert;
 
-    private IManager<Treatment> manager;
-
+    BllFacade bllFacade;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +53,8 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
         editDuration = (EditText)findViewById(R.id.editDuration);
         btnCreate = (Button)findViewById(R.id.btnCreate);
         btnDelete = (Button)findViewById(R.id.btnDelete);
+
+        bllFacade = new BllFacade();
         if(treatmentId == null)
         {
             btnDelete.setVisibility(View.INVISIBLE);
@@ -87,7 +87,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
 
     private void deleteTreatment(Treatment treatment) {
         DeleteTask<Treatment> deleteTask = new DeleteTask<Treatment>(this,treatment);
-        deleteTask.execute(new TreatmentManager());
+        deleteTask.execute(bllFacade.getTreatmentManager());
     }
 
     private void updateTreatment() {
@@ -97,7 +97,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
         treatment.setDuration(Integer.parseInt(editDuration.getText().toString()));
 
         UpdateTask<Treatment> updateTask = new UpdateTask<Treatment>(this,treatment);
-        updateTask.execute(new TreatmentManager());
+        updateTask.execute(bllFacade.getTreatmentManager());
     }
 
     private void createNewTreatment() {
@@ -108,7 +108,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
         treatment.setDuration(Integer.parseInt(editDuration.getText().toString()));
 
         CreateTask<Treatment> createTask = new CreateTask<>(this,treatment);
-        createTask.execute(new TreatmentManager());
+        createTask.execute(bllFacade.getTreatmentManager());
     }
 
     private void setUpFields(Treatment t) {
@@ -142,23 +142,15 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
     }
 
     private void populateTreatment(String id) {
-        TreatmentManager manager = new TreatmentManager();
         DownloadTask<Treatment> downloadTask = new DownloadTask<Treatment>(this,id);
-        downloadTask.execute(manager);
+        downloadTask.execute(bllFacade.getTreatmentManager());
     }
 
     @Override
     public void onTaskComplete(AsyncTaskResult<Treatment> result) {
         if (result.isSuccessful()){
-            if (result.getResults().size() == 0){
                 cleanUpFields();
                 finish();
-            }
-            else {
-                treatment = result.getResults().get(0);
-                Toast.makeText(this,"Succeful",Toast.LENGTH_SHORT).show();
-                setUpFields(result.getResults().get(0));
-            }
         } else {
             alertDialog(result.getException().getMessage());
             //pop up dialog med error
