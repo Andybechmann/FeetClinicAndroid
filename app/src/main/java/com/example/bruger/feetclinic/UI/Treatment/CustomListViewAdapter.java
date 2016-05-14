@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.bruger.feetclinic.BLL.BE.Therapist;
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.R;
 
@@ -25,12 +26,11 @@ public class CustomListViewAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
 
-    public CustomListViewAdapter(Context context, ArrayList<Treatment> data)
-    {
-        mContext = context;
-        treatments = data;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public CustomListViewAdapter(Context context, ArrayList<Treatment> data) {
 
+    }
+
+    public CustomListViewAdapter(Context applicationContext, ArrayList<Therapist> listOfTherapists) {
     }
 
     @Override
