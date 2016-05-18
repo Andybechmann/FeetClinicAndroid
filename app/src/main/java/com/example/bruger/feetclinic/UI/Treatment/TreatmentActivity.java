@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class TreatmentActivity extends AppCompatActivity implements OnTaskCompleteListener<Treatment> {
 
     private Button btnCreate;
-    private CustomListViewAdapter customListViewAdapter;
+    private TreatmentListViewAdapter treatmentListViewAdapter;
     private ListView listView;
 
     private boolean isSyncronized = false;
@@ -133,14 +133,14 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     }
     private void setUpAdapter(final ArrayList<Treatment> listOfTreatments){
         listView = (ListView)findViewById(R.id.list);
-        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), listOfTreatments);
+        treatmentListViewAdapter = new TreatmentListViewAdapter(getApplicationContext(), listOfTreatments);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 startDetailsActivity(listOfTreatments.get(position));
             }
         });
-        listView.setAdapter(customListViewAdapter);
+        listView.setAdapter(treatmentListViewAdapter);
     }
 
     private void showDialog(String message)

@@ -14,13 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.bruger.feetclinic.BLL.BE.Therapist;
-import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.BLL.BllFacade;
 import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
 import com.example.bruger.feetclinic.R;
-import com.example.bruger.feetclinic.UI.Treatment.CustomListViewAdapter;
+import com.example.bruger.feetclinic.UI.Treatment.TreatmentListViewAdapter;
 
 import java.util.ArrayList;
 
@@ -32,7 +31,7 @@ public class TherapistActivity extends AppCompatActivity implements OnTaskComple
     private TextView txtName;
     private TextView txtDescription;
     private AlertDialog alert;
-    private CustomListViewAdapter customListViewAdapter;
+    private TherapistListViewAdapter customListViewAdapter;
     private ListView listView;
     ArrayList<Therapist> therapists;
     BllFacade bllFacade;
@@ -72,7 +71,7 @@ public class TherapistActivity extends AppCompatActivity implements OnTaskComple
     }
     private void setUpAdapter(final ArrayList<Therapist> listOfTherapists){
         listView = (ListView)findViewById(R.id.list);
-        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(),listOfTherapists);
+        customListViewAdapter = new TherapistListViewAdapter(getApplicationContext(),listOfTherapists);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {

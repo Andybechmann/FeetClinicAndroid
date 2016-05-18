@@ -1,4 +1,4 @@
-package com.example.bruger.feetclinic.UI.Therapist;
+package com.example.bruger.feetclinic.UI.Treatment;
 
 
 
@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.bruger.feetclinic.BLL.BE.Therapist;
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
-import com.example.bruger.feetclinic.DAL.REST.TherapistRest;
 import com.example.bruger.feetclinic.R;
 
 import java.util.ArrayList;
@@ -20,27 +19,20 @@ import java.util.ArrayList;
 /**
  * Created by Buster on 25-02-2016.
  */
-public class CustomListViewAdapter extends BaseAdapter {
+public class TreatmentListViewAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<Therapist> therapists;
+    private ArrayList<Treatment> treatments;
     private static LayoutInflater inflater = null;
 
 
-    public CustomListViewAdapter(Context context, ArrayList<Therapist> data)
-    {
-        mContext = context;
-        therapists = data;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public TreatmentListViewAdapter(Context context, ArrayList<Treatment> data) {
 
-    }
-
-    public CustomListViewAdapter(Context applicationContext, ArrayList<Therapist> listOfTherapists) {
     }
 
     @Override
     public int getCount() {
-        return therapists.size();
+        return treatments.size();
     }
 
     @Override
@@ -58,13 +50,13 @@ public class CustomListViewAdapter extends BaseAdapter {
         View view = convertView;
 
         if(convertView==null){
-            view = inflater.inflate(R.layout.list_therapists, null);
+            view = inflater.inflate(R.layout.list_treatments, null);
         }
         TextView name = (TextView) view.findViewById(R.id.name);
+        TextView price = (TextView) view.findViewById(R.id.price);
 
-
-        name.setText(therapists.get(position).getName());
-
+        name.setText(treatments.get(position).getName());
+        price.setText("price: " + treatments.get(position).getPrice());
 
         return view;
     }
