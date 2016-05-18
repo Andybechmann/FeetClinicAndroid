@@ -12,16 +12,16 @@ import java.util.ArrayList;
  */
 public class DeleteTask<T extends IEntity> extends AsyncTask<IManager<T>,Void,AsyncTaskResult<T>> {
 
-    private final OnTaskCompleteListener listener;
+    private final OnDeleteTaskCompleteListener listener;
     private  String id = null;
     private T entity = null;
 
-    public DeleteTask(OnTaskCompleteListener listener, String id) {
+    public DeleteTask(OnDeleteTaskCompleteListener listener, String id) {
         this.listener = listener;
         this.id = id;
     }
 
-    public DeleteTask(OnTaskCompleteListener listener, T entity) {
+    public DeleteTask(OnDeleteTaskCompleteListener listener, T entity) {
         this.listener = listener;
         this.entity = entity;
     }
@@ -47,7 +47,7 @@ public class DeleteTask<T extends IEntity> extends AsyncTask<IManager<T>,Void,As
     @Override
     protected void onPostExecute(AsyncTaskResult<T> asyncTaskResult) {
         if (listener !=null) {
-            listener.onTaskComplete(asyncTaskResult);
+            listener.onDeleteTaskComplete(asyncTaskResult);
         }
     }
 }

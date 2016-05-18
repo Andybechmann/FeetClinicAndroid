@@ -12,10 +12,10 @@ import java.util.ArrayList;
  */
 public class CreateTask<T extends IEntity> extends AsyncTask<IManager<T>,Void,AsyncTaskResult<T>> {
 
-    OnTaskCompleteListener listener;
+    OnCreateTaskCompleteListener listener;
     T entity;
 
-    public CreateTask(OnTaskCompleteListener listener, T entity) {
+    public CreateTask(OnCreateTaskCompleteListener listener, T entity) {
         this.listener = listener;
         this.entity = entity;
     }
@@ -35,6 +35,6 @@ public class CreateTask<T extends IEntity> extends AsyncTask<IManager<T>,Void,As
 
     @Override
     protected void onPostExecute(AsyncTaskResult<T> asyncTaskResult) {
-        listener.onTaskComplete(asyncTaskResult);
+        listener.onCreateTaskComplete(asyncTaskResult);
     }
 }

@@ -11,16 +11,16 @@ import java.util.ArrayList;
  * Created by Stepanenko on 09/05/2016.
  */
 public class UpdateTask<T extends IEntity> extends AsyncTask<IManager<T>,Void,AsyncTaskResult<T>> {
-    private final OnTaskCompleteListener listener;
+    private final OnUpdateTaskCompleteListener listener;
     private  String id = null;
     private T entity = null;
 
-    public UpdateTask(OnTaskCompleteListener listener, T entity) {
+    public UpdateTask(OnUpdateTaskCompleteListener listener, T entity) {
         this.listener = listener;
         this.entity = entity;
     }
 
-    public UpdateTask(OnTaskCompleteListener listener, String id, T entity) {
+    public UpdateTask(OnUpdateTaskCompleteListener listener, String id, T entity) {
         this.listener = listener;
         this.id = id;
         this.entity = entity;
@@ -47,7 +47,7 @@ public class UpdateTask<T extends IEntity> extends AsyncTask<IManager<T>,Void,As
     @Override
     protected void onPostExecute(AsyncTaskResult<T> asyncTaskResult) {
         if (listener !=null) {
-            listener.onTaskComplete(asyncTaskResult);
+            listener.onUpdateTaskComplete(asyncTaskResult);
         }
     }
 }

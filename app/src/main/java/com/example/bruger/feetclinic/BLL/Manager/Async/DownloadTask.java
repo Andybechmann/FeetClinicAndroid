@@ -12,13 +12,13 @@ import java.util.ArrayList;
  */
 public class DownloadTask<T extends IEntity> extends AsyncTask<IManager<T>,Void,AsyncTaskResult<T>> {
 
-    private final OnTaskCompleteListener listener;
+    private final OnDownloadTaskCompleteListener listener;
     private  String id = null;
-    public DownloadTask(OnTaskCompleteListener listener) {
+    public DownloadTask(OnDownloadTaskCompleteListener listener) {
         this.listener = listener;
 }
 
-    public DownloadTask(OnTaskCompleteListener listener, String id) {
+    public DownloadTask(OnDownloadTaskCompleteListener listener, String id) {
         this.listener = listener;
         this.id = id;
     }
@@ -44,7 +44,7 @@ public class DownloadTask<T extends IEntity> extends AsyncTask<IManager<T>,Void,
     @Override
     protected void onPostExecute(AsyncTaskResult<T> asyncTaskResult) {
         if (listener !=null) {
-            listener.onTaskComplete(asyncTaskResult);
+            listener.onDownloadTaskComplete(asyncTaskResult);
         }
     }
 }

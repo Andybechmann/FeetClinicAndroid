@@ -1,13 +1,8 @@
 package com.example.bruger.feetclinic.UI.Treatment;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +16,7 @@ import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.BLL.BllFacade;
 import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
-import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
+import com.example.bruger.feetclinic.BLL.Manager.Async.OnDownloadTaskCompleteListener;
 import com.example.bruger.feetclinic.R;
 
 import java.util.ArrayList;
@@ -30,33 +25,17 @@ import java.util.ArrayList;
 /**
  * Created by Bruger on 25-04-2016.
  */
-public class TreatmentActivity extends AppCompatActivity implements OnTaskCompleteListener<Treatment> {
+public class TreatmentActivity extends AppCompatActivity implements OnDownloadTaskCompleteListener<Treatment> {
 
     private Button btnCreate;
     private TreatmentListViewAdapter treatmentListViewAdapter;
     private ListView listView;
 
-    private boolean isSyncronized = false;
     private boolean isReceiverRegistered = false;
     BllFacade bllFacade;
 
 
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            NetworkInfo info = getNetworkInfo(context);
-            if (info != null && info.isConnected()) {
-
-            } else {
-            }
-        }
-    };
-
-    private NetworkInfo getNetworkInfo(Context context) {
-        ConnectivityManager connManager = (ConnectivityManager)
-                context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return connManager.getActiveNetworkInfo();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,26 +53,6 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
         sync();
     }
 
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!isReceiverRegistered) {
-            isReceiverRegistered = true;
-            registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE")); // IntentFilter to wifi state change is "android.net.wifi.STATE_CHANGE"
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-            if (isReceiverRegistered) {
-                isReceiverRegistered = false;
-                unregisterReceiver(receiver);
-            }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -101,13 +60,18 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     }
 
     @Override
-    public void onTaskComplete(AsyncTaskResult<Treatment> result) {
+    protected void onStart() {
+        super.onStart();
+        populateTreatments();
+    }
+
+    @Override
+    public void onDownloadTaskComplete(AsyncTaskResult<Treatment> result) {
         if (result.isSuccessful()){
             update(result.getResults());
         }
         else {
             showDialog("Apps can not work normally, problems with Database " + result.getException().getMessage() + "  Try again later");
-            finish();
         }
     }
 
@@ -158,6 +122,7 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
     
     private void sync() {
         Thread thread = new Thread(new Sync());
+        thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
     }
 
@@ -165,7 +130,7 @@ public class TreatmentActivity extends AppCompatActivity implements OnTaskComple
 
         @Override
         public void run() {
-            bllFacade.getTherapistManager().synchronize();
+            bllFacade.getTreatmentManager().synchronize();
         }
     }
 }

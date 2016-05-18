@@ -62,10 +62,14 @@ public class TreatmentManager implements IManager<Treatment> {
 
     @Override
     public boolean synchronize() {
+        boolean isOk = false;
         if (synchronizer == null){
             synchronizer = new Synchronizer();
         }
-        boolean isOk = synchronizer.synchronize(dalFacade.getTreatmentRepository(true), dalFacade.getTreatmentUsyncRepository());
+        if (connectService.isOnline()){
+            isOk = synchronizer.synchronize(dalFacade.getTreatmentRepository(true), dalFacade.getTreatmentUsyncRepository());
+        }
+
         return isOk;
     }
 }

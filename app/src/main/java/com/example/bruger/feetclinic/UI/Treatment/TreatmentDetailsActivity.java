@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.BLL.BllFacade;
@@ -17,14 +16,19 @@ import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
 import com.example.bruger.feetclinic.BLL.Manager.Async.CreateTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DeleteTask;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
-import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
+import com.example.bruger.feetclinic.BLL.Manager.Async.OnCreateTaskCompleteListener;
+import com.example.bruger.feetclinic.BLL.Manager.Async.OnDeleteTaskCompleteListener;
+import com.example.bruger.feetclinic.BLL.Manager.Async.OnDownloadTaskCompleteListener;
+import com.example.bruger.feetclinic.BLL.Manager.Async.OnUpdateTaskCompleteListener;
 import com.example.bruger.feetclinic.BLL.Manager.Async.UpdateTask;
 import com.example.bruger.feetclinic.R;
 
 /**
  * Created by Bruger on 27-04-2016.
  */
-public class TreatmentDetailsActivity extends AppCompatActivity implements OnTaskCompleteListener<Treatment> {
+public class TreatmentDetailsActivity extends AppCompatActivity implements
+        OnDownloadTaskCompleteListener<Treatment>, OnCreateTaskCompleteListener<Treatment>,
+        OnUpdateTaskCompleteListener<Treatment>, OnDeleteTaskCompleteListener<Treatment> {
 
     private TextView txtName;
     private TextView txtDescription;
@@ -86,7 +90,7 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
     }
 
     private void deleteTreatment(Treatment treatment) {
-        DeleteTask<Treatment> deleteTask = new DeleteTask<Treatment>(this,treatment);
+        DeleteTask<Treatment> deleteTask = new DeleteTask(this,treatment);
         deleteTask.execute(bllFacade.getTreatmentManager());
     }
 
@@ -147,13 +151,40 @@ public class TreatmentDetailsActivity extends AppCompatActivity implements OnTas
     }
 
     @Override
-    public void onTaskComplete(AsyncTaskResult<Treatment> result) {
+    public void onDownloadTaskComplete(AsyncTaskResult<Treatment> result) {
         if (result.isSuccessful()){
-                cleanUpFields();
-                finish();
+                treatment = result.getResults().get(0);
+                setUpFields(treatment);
         } else {
             alertDialog(result.getException().getMessage());
-            //pop up dialog med error
+        }
+    }
+
+    @Override
+    public void onCreateTaskComplete(AsyncTaskResult<Treatment> result) {
+        if (result.isSuccessful()){
+            alertDialog("Treatment has been created");
+            cleanUpFields();
+        } else {
+            alertDialog(result.getException().getMessage());
+        }
+    }
+
+    @Override
+    public void onDeleteTaskComplete(AsyncTaskResult<Treatment> result) {
+        if (result.isSuccessful()){
+            finish();
+        } else {
+            alertDialog(result.getException().getMessage());
+        }
+    }
+
+    @Override
+    public void onUpdateTaskComplete(AsyncTaskResult<Treatment> result) {
+        if (result.isSuccessful()){
+            finish();
+        } else {
+            alertDialog(result.getException().getMessage());
         }
     }
 }

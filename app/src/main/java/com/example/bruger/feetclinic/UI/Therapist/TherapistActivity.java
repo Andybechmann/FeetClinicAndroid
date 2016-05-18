@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.bruger.feetclinic.BLL.BE.Therapist;
 import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
-import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
+import com.example.bruger.feetclinic.BLL.Manager.Async.OnDownloadTaskCompleteListener;
 import com.example.bruger.feetclinic.R;
 import com.example.bruger.feetclinic.BLL.BllFacade;
 import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by Bruger on 27-04-2016.
  */
-public class TherapistActivity extends AppCompatActivity implements OnTaskCompleteListener<Therapist> {
+public class TherapistActivity extends AppCompatActivity implements OnDownloadTaskCompleteListener<Therapist> {
 
     private TextView txtName;
     private TextView txtDescription;
@@ -85,7 +85,7 @@ public class TherapistActivity extends AppCompatActivity implements OnTaskComple
     }
 
     @Override
-    public void onTaskComplete(AsyncTaskResult<Therapist> result) {
+    public void onDownloadTaskComplete(AsyncTaskResult<Therapist> result) {
         if (result.isSuccessful()){
             update(result.getResults());
         }
