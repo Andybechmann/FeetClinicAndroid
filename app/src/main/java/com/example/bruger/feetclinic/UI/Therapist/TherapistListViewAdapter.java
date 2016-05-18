@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.bruger.feetclinic.BLL.BE.Therapist;
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
-import com.example.bruger.feetclinic.DAL.REST.TherapistRest;
 import com.example.bruger.feetclinic.R;
 
 import java.util.ArrayList;
@@ -20,22 +19,19 @@ import java.util.ArrayList;
 /**
  * Created by Buster on 25-02-2016.
  */
-public class CustomListViewAdapter extends BaseAdapter {
+public class TherapistListViewAdapter extends BaseAdapter {
 
     private Context mContext;
     private ArrayList<Therapist> therapists;
     private static LayoutInflater inflater = null;
 
 
-    public CustomListViewAdapter(Context context, ArrayList<Therapist> data)
+    public TherapistListViewAdapter(Context context, ArrayList<Therapist> data)
     {
         mContext = context;
         therapists = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    }
-
-    public CustomListViewAdapter(Context applicationContext, ArrayList<Therapist> listOfTherapists) {
     }
 
     @Override
@@ -58,13 +54,13 @@ public class CustomListViewAdapter extends BaseAdapter {
         View view = convertView;
 
         if(convertView==null){
-            view = inflater.inflate(R.layout.list_therapists, null);
+            view = inflater.inflate(R.layout.list_treatments, null);
         }
         TextView name = (TextView) view.findViewById(R.id.name);
-
+        TextView description = (TextView) view.findViewById(R.id.txtDescription);
 
         name.setText(therapists.get(position).getName());
-
+        description.setText("price: " + therapists.get(position).getDescription());
 
         return view;
     }
