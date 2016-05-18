@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.example.bruger.feetclinic.BLL.BE.Therapist;
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.R;
 
@@ -27,7 +25,9 @@ public class TreatmentListViewAdapter extends BaseAdapter {
 
 
     public TreatmentListViewAdapter(Context context, ArrayList<Treatment> data) {
-
+        mContext = context;
+        treatments = data;
+        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override

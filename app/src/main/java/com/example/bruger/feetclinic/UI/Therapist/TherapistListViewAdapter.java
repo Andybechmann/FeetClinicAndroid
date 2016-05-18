@@ -9,10 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.example.bruger.feetclinic.BLL.BE.Therapist;
-import com.example.bruger.feetclinic.BLL.BE.Treatment;
-import com.example.bruger.feetclinic.DAL.REST.TherapistRest;
 import com.example.bruger.feetclinic.R;
 
 import java.util.ArrayList;

@@ -58,10 +58,10 @@ public class TherapistActivity extends AppCompatActivity implements OnTaskComple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_therapist);
         bllFacade = new BllFacade();
-        populateTreatments();
+        populateTherapist();
     }
 
-    private void populateTreatments(){
+    private void populateTherapist(){
         DownloadTask<Therapist> downloadTask = new DownloadTask(this);
         downloadTask.execute( bllFacade.getTherapistManager());
     }
@@ -69,6 +69,7 @@ public class TherapistActivity extends AppCompatActivity implements OnTaskComple
     public void update(ArrayList<Therapist> arrTherapists) {
         setUpAdapter(arrTherapists);
     }
+
     private void setUpAdapter(final ArrayList<Therapist> listOfTherapists){
         listView = (ListView)findViewById(R.id.list);
         customListViewAdapter = new TherapistListViewAdapter(getApplicationContext(),listOfTherapists);
