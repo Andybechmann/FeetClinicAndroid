@@ -18,19 +18,18 @@ import java.util.ArrayList;
 /**
  * Created by Buster on 25-02-2016.
  */
-public class CustomListViewAdapter extends BaseAdapter {
+public class TreatmentListViewAdapter extends BaseAdapter {
 
     private Context mContext;
     private ArrayList<Treatment> treatments;
     private static LayoutInflater inflater = null;
 
 
-    public CustomListViewAdapter(Context context, ArrayList<Treatment> data)
+    public TreatmentListViewAdapter(Context context, ArrayList<Treatment> data)
     {
         mContext = context;
         treatments = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @Override

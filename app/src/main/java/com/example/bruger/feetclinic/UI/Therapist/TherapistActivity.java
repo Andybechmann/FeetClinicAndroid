@@ -11,6 +11,12 @@ import android.widget.TextView;
 
 import com.example.bruger.feetclinic.BLL.BE.Therapist;
 import com.example.bruger.feetclinic.R;
+import com.example.bruger.feetclinic.BLL.BllFacade;
+import com.example.bruger.feetclinic.BLL.Manager.Async.AsyncTaskResult;
+import com.example.bruger.feetclinic.BLL.Manager.Async.DownloadTask;
+import com.example.bruger.feetclinic.BLL.Manager.Async.OnTaskCompleteListener;
+import com.example.bruger.feetclinic.R;
+import com.example.bruger.feetclinic.UI.Treatment.TreatmentListViewAdapter;
 
 import java.util.ArrayList;
 
@@ -31,11 +37,8 @@ public class TherapistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_therapist);
         therapists = new ArrayList<>();
-
         txtName = (TextView)findViewById(R.id.txtName);
         txtDescription = (TextView)findViewById(R.id.txtDescription);
-
-
     }
 
 
@@ -43,6 +46,7 @@ public class TherapistActivity extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.list);
         customListViewAdapter = new TherapistListViewAdapter(getApplicationContext(), listOfTherapists);
         listView.setAdapter(customListViewAdapter);
+        customListViewAdapter = new TherapistListViewAdapter(getApplicationContext(),listOfTherapists);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
