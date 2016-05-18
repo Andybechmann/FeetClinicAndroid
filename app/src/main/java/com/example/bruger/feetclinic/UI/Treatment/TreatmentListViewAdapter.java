@@ -24,11 +24,13 @@ public class TreatmentListViewAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
 
+
     public TreatmentListViewAdapter(Context context, ArrayList<Treatment> data) {
         mContext = context;
         treatments = data;
-        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
 
     @Override
     public int getCount() {

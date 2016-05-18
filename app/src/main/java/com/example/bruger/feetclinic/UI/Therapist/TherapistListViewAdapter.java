@@ -32,7 +32,6 @@ public class TherapistListViewAdapter extends BaseAdapter {
 
     }
 
-
     @Override
     public int getCount() {
         return therapists.size();
@@ -53,13 +52,13 @@ public class TherapistListViewAdapter extends BaseAdapter {
         View view = convertView;
 
         if(convertView==null){
-            view = inflater.inflate(R.layout.list_therapists, null);
+            view = inflater.inflate(R.layout.list_treatments, null);
         }
         TextView name = (TextView) view.findViewById(R.id.name);
-
+        TextView description = (TextView) view.findViewById(R.id.txtDescription);
 
         name.setText(therapists.get(position).getName());
-
+        description.setText("price: " + therapists.get(position).getDescription());
 
         return view;
     }
