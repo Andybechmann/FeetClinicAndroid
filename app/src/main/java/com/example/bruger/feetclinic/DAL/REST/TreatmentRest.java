@@ -2,7 +2,7 @@ package com.example.bruger.feetclinic.DAL.REST;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.DAL.IRepository;
-import com.example.bruger.feetclinic.Service.GsonService;
+import com.example.bruger.feetclinic.Service.JsonService;
 import com.example.bruger.feetclinic.Service.HttpClient;
 
 import java.io.IOException;
@@ -15,44 +15,44 @@ public class TreatmentRest implements IRepository<Treatment> {
 
     private String URL = "http://feetclinic-ievg0012.rhcloud.com/api/treatments";
     private HttpClient httpClient;
-    private GsonService<Treatment> gsonService;
+    private JsonService<Treatment> jsonService;
 
     public TreatmentRest(String url) {
         this.URL = url;
         httpClient = new HttpClient(URL);
-        gsonService = new GsonService(Treatment.class);
+        jsonService = new JsonService(Treatment.class);
     }
     public TreatmentRest() {
         httpClient = new HttpClient(URL);
-        gsonService = new GsonService(Treatment.class);
+        jsonService = new JsonService(Treatment.class);
     }
 
     @Override
     public ArrayList<Treatment> getAll() throws IOException {
         String all = httpClient.doGet();
-        return gsonService.fromJsonArray(all);
+        return jsonService.fromJsonArray(all);
     }
 
     @Override
     public Treatment create(Treatment treatment) throws IOException {
-        String treatmentAsJson = gsonService.toJson(treatment);
+        String treatmentAsJson = jsonService.toJson(treatment);
         String responseAsJson = httpClient.doPost(treatmentAsJson);
-        return gsonService.fromJson(responseAsJson);
+        return jsonService.fromJson(responseAsJson);
     }
 
     @Override
     public Treatment get(String id) throws IOException {
         String treatment = httpClient.doGet(appendId(URL, id));
-        return gsonService.fromJson(treatment);
+        return jsonService.fromJson(treatment);
     }
 
     @Override
     public Treatment update(Treatment treatment) throws IOException {
 
-        String treatmentToUpdate = gsonService.toJson(treatment);
+        String treatmentToUpdate = jsonService.toJson(treatment);
         String updatedTreatment = httpClient
                 .doUpdate(treatmentToUpdate, appendId(URL, treatment.get_Id()));
-        return gsonService.fromJson(updatedTreatment);
+        return jsonService.fromJson(updatedTreatment);
     }
 
     @Override

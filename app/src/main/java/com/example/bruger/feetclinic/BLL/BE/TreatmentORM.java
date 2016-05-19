@@ -1,13 +1,12 @@
 package com.example.bruger.feetclinic.BLL.BE;
 
-import com.orm.dsl.Ignore;
 import com.orm.dsl.Table;
 
 /**
  * Created by Stepanenko on 01/05/2016.
  */
 @Table
-public class TreatmentORM extends Treatment {
+public class TreatmentORM extends Treatment implements IUsyncEntity {
     private Long id;
     private boolean deleted;
     private boolean modified;
@@ -36,26 +35,32 @@ public class TreatmentORM extends Treatment {
         this.id = id;
     }
 
+    @Override
     public boolean isDeleted() {
         return deleted;
     }
 
+    @Override
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
+    @Override
     public boolean isModified() {
         return modified;
     }
 
+    @Override
     public void setModified(boolean modified) {
         this.modified = modified;
     }
 
+    @Override
     public boolean isCreated() {
         return created;
     }
 
+    @Override
     public void setCreated(boolean created) {
         this.created = created;
     }

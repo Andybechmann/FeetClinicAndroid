@@ -2,7 +2,6 @@ package com.example.bruger.feetclinic.DAL.SQLite;
 
 import com.example.bruger.feetclinic.BLL.BE.Treatment;
 import com.example.bruger.feetclinic.BLL.BE.TreatmentORM;
-import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.DAL.IUsyncRepository;
 import com.orm.SugarRecord;
 

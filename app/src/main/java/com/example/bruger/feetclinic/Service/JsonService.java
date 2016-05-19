@@ -12,12 +12,12 @@ import java.util.List;
 /**
  * Created by Stepanenko on 28/04/2016.
  */
-public class GsonService<T> {
+public class JsonService<T> {
 
     private Gson gson;
     private final Class<T> type;
 
-    public GsonService(Class<T> type) {
+    public JsonService(Class<T> type) {
         this.type = type;
         gson = new Gson();
     }
@@ -31,6 +31,7 @@ public class GsonService<T> {
     public String toJson(List<T> listOfT){
         return gson.toJson(listOfT);
     }
+
     public ArrayList<T> fromJsonArray(String json){
         Type collectionType =new ListParameterizedType(type);
         ArrayList<T> list = gson.fromJson(json,collectionType);
