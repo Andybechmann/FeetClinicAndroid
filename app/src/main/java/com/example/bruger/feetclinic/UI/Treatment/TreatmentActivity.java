@@ -80,7 +80,6 @@ public class TreatmentActivity extends AppCompatActivity implements OnDownloadTa
         downloadTask.execute( bllFacade.getTreatmentManager());
     }
 
-
     private void startDetailsActivity(Treatment treatment)
     {
         Intent intent = new Intent(this,TreatmentDetailsActivity.class);
