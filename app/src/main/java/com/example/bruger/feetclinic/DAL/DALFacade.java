@@ -8,9 +8,6 @@ import com.example.bruger.feetclinic.DAL.REST.TherapistRest;
 import com.example.bruger.feetclinic.DAL.REST.TreatmentRest;
 import com.example.bruger.feetclinic.DAL.SQLite.TherapistSqlite;
 import com.example.bruger.feetclinic.DAL.SQLite.TreatmentSqlite;
-import com.example.bruger.feetclinic.Service.ConnectService;
-
-import java.io.IOException;
 
 /**
  * Created by Stepanenko on 09/05/2016.

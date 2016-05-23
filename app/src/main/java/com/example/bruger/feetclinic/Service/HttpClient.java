@@ -29,10 +29,10 @@ public class HttpClient {
     public String doGet(String url) throws IOException {
         return get(url).body().string();
     }
-    public Response get() throws IOException {
+    private Response get() throws IOException {
         return get(url);
     }
-    public Response get(String url) throws IOException {
+    private Response get(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -59,10 +59,10 @@ public class HttpClient {
     public String doPost(String json,String url) throws IOException {
         return post(json).body().string();
     }
-    public Response post(String json) throws IOException {
+    private Response post(String json) throws IOException {
        return post(json, url);
     }
-    public Response post(String json,String url) throws IOException {
+    private Response post(String json,String url) throws IOException {
         RequestBody body = RequestBody.create  (JSON,json);
         Request request = new Request.Builder()
                 .url(url)
@@ -76,7 +76,7 @@ public class HttpClient {
     public String doUpdate(String json,String url) throws IOException {
         return update(json,url).body().string();
     }
-    public Response update(String json,String url) throws IOException {
+    private Response update(String json,String url) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(url)
@@ -85,8 +85,4 @@ public class HttpClient {
         Response response = client.newCall(request).execute();
         return response;
     }
-
-
-
-
 }

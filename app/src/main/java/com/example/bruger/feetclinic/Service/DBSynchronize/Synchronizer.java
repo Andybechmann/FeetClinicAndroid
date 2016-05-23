@@ -13,18 +13,19 @@ public class Synchronizer implements ISynchronizer{
 
 
     @Override
-    public <T extends SuperT, SuperT extends IEntity> boolean synchronize(IRepository<SuperT> main, IUsyncRepository<T, SuperT> local)
+    public <EntityORM extends Entity, Entity extends IEntity>
+    boolean synchronize(IRepository<Entity> main, IUsyncRepository<EntityORM, Entity> local)
      {
-        ArrayList<T> objectsToSynchronize;
+        ArrayList<EntityORM> objectsToSynchronize;
 
         //create to remote DB
         try {
             objectsToSynchronize = local.getAllCreated();
-            for (T t: objectsToSynchronize) {
-                t.set_Id(null);
-                SuperT createdT = main.create(t);
-                t.set_Id(createdT.get_Id());
-                local.approveCreate(t);
+            for (EntityORM entityORM : objectsToSynchronize) {
+                entityORM.set_Id(null);
+                Entity createdT = main.create(entityORM);
+                entityORM.set_Id(createdT.get_Id());
+                local.approveCreate(entityORM);
             }
         } catch (Exception e) {
             return false;
@@ -32,9 +33,9 @@ public class Synchronizer implements ISynchronizer{
         //update to remote DB
         try {
             objectsToSynchronize = local.getAllUpdated();
-            for (T t: objectsToSynchronize) {
-                main.update(t);
-                local.approveUpdate(t);
+            for (EntityORM entityORM : objectsToSynchronize) {
+                main.update(entityORM);
+                local.approveUpdate(entityORM);
             }
         } catch (Exception e) {
             return false;
@@ -42,9 +43,9 @@ public class Synchronizer implements ISynchronizer{
         //delete to remote DB
         try {
             objectsToSynchronize = local.getAllDeleted();
-            for (T t: objectsToSynchronize) {
-                if(main.delete(t))
-                    local.approveDelete(t);
+            for (EntityORM entityORM : objectsToSynchronize) {
+                if(main.delete(entityORM))
+                    local.approveDelete(entityORM);
             }
         } catch (Exception e) {
             return false;
@@ -53,20 +54,18 @@ public class Synchronizer implements ISynchronizer{
 
         try {
 
-            ArrayList<SuperT> mainDbList = main.getAll();
-            ArrayList<SuperT> localDbList  = local.getAll();
+            ArrayList<Entity> mainDbList = main.getAll();
+            ArrayList<Entity> localDbList  = local.getAll();
 
+            //was deleted in remote DB
             localDbList.removeAll(mainDbList);
             local.deleteAll(localDbList);
 
+            //was created in remote DB
             localDbList = local.getAll();
             mainDbList.removeAll(localDbList);
-
             local.createAll(mainDbList);
-/*
-            local.deleteAll();
-            local.createAll(main.getAll());
-            */
+
         } catch (Exception e) {
             return false;
         }

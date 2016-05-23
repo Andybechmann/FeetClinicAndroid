@@ -20,6 +20,9 @@ public class AsyncTaskResult<T> {
         if (results != null){
             isSuccessful = true;
         }
+        else {
+            isSuccessful = false;
+        }
     }
 
     public boolean isSuccessful() {
