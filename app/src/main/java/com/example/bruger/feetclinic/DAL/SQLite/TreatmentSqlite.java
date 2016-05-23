@@ -116,7 +116,7 @@ public class TreatmentSqlite implements IUsyncRepository<TreatmentORM,Treatment>
         treatmentORM.setModified(false);
         treatmentORM.setCreated(true);
         SugarRecord.save(treatmentORM);
-        return treatment;
+        return treatmentORM;
     }
 
     @Override

@@ -14,8 +14,8 @@ import com.example.bruger.feetclinic.DAL.SQLite.TreatmentSqlite;
  */
 public class DALFacade {
 
-    IRepository<Treatment> treatmentRepository;
-    IRepository<Therapist> therapistRepository;
+    private IRepository<Treatment> treatmentRepository;
+    private IRepository<Therapist> therapistRepository;
 
     public IRepository<Treatment> getTreatmentRepository(boolean online) {
         if (online) {

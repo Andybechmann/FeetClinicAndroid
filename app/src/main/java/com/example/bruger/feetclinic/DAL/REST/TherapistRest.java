@@ -2,8 +2,8 @@ package com.example.bruger.feetclinic.DAL.REST;
 
 import com.example.bruger.feetclinic.BLL.BE.Therapist;
 import com.example.bruger.feetclinic.DAL.IRepository;
-import com.example.bruger.feetclinic.Service.GsonService;
 import com.example.bruger.feetclinic.Service.HttpClient;
+import com.example.bruger.feetclinic.Service.JsonService;
 
 import java.util.ArrayList;
 
@@ -14,35 +14,35 @@ public class TherapistRest implements IRepository<Therapist> {
 
     private String URL = "http://feetclinic-ievg0012.rhcloud.com/api/therapist";
     private HttpClient httpClient;
-    private GsonService<Therapist> gsonService;
+    private JsonService<Therapist> jsonService;
 
 
 
     public TherapistRest(String url) {
         this.URL = url;
         httpClient = new HttpClient(URL);
-        gsonService = new GsonService(Therapist.class);
+        jsonService = new JsonService(Therapist.class);
     }
     public TherapistRest() {
         httpClient = new HttpClient(URL);
-        gsonService = new GsonService(Therapist.class);
+        jsonService = new JsonService(Therapist.class);
     }
 
 
 
     @Override
     public Therapist create(Therapist therapist) throws Exception {
-        String therapistAsJson = gsonService.toJson(therapist);
+        String therapistAsJson = jsonService.toJson(therapist);
         String responseAsJson = httpClient.doPost(therapistAsJson);
-        return gsonService.fromJson(responseAsJson);
+        return jsonService.fromJson(responseAsJson);
     }
 
     @Override
     public Therapist update(Therapist therapist) throws Exception {
-        String therapistToUpdate = gsonService.toJson(therapist);
+        String therapistToUpdate = jsonService.toJson(therapist);
         String updatedTherapist = httpClient
                 .doUpdate(therapistToUpdate, appendId(URL, therapist.get_Id()));
-        return gsonService.fromJson(updatedTherapist);
+        return jsonService.fromJson(updatedTherapist);
     }
 
     @Override
@@ -67,13 +67,13 @@ public class TherapistRest implements IRepository<Therapist> {
     @Override
     public ArrayList<Therapist> getAll() throws Exception {
         String all = httpClient.doGet();
-        return gsonService.fromJsonArray(all);
+        return jsonService.fromJsonArray(all);
     }
 
     @Override
     public Therapist get(String id) throws Exception {
         String therapist = httpClient.doGet(appendId(URL, id));
-        return gsonService.fromJson(therapist);
+        return jsonService.fromJson(therapist);
     }
 
     private String appendId(String url,String id){

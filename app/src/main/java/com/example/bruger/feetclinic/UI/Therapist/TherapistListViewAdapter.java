@@ -52,9 +52,9 @@ public class TherapistListViewAdapter extends BaseAdapter {
         View view = convertView;
 
         if(convertView==null){
-            view = inflater.inflate(R.layout.list_treatments, null);
+            view = inflater.inflate(R.layout.list_therapists, null);
         }
-        TextView name = (TextView) view.findViewById(R.id.name);
+        TextView name = (TextView) view.findViewById(R.id.txtName);
         TextView description = (TextView) view.findViewById(R.id.txtDescription);
 
         name.setText(therapists.get(position).getName());
@@ -62,6 +62,4 @@ public class TherapistListViewAdapter extends BaseAdapter {
 
         return view;
     }
-
-
 }

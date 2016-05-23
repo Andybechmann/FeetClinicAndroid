@@ -17,6 +17,10 @@ public class Therapist implements IEntity{
     public Therapist() {
     }
 
+    public Therapist(Therapist therapist) {
+        this(therapist.getName(),therapist.getDescription());
+    }
+
     public String getName() {
         return name;
     }

@@ -67,9 +67,12 @@ public class TherapistActivity extends AppCompatActivity implements OnDownloadTa
     }
     private void startDetailsActivity(String id)
     {
+        /*
         Intent intent = new Intent(this,TherapistDetailsActivity.class);
         intent.putExtra("id",id);
         startActivity(intent);
+        */
+        //skal videre udikles
     }
     private void showDialog(String message)
     {

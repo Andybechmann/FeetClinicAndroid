@@ -4,6 +4,8 @@ import com.example.bruger.feetclinic.BLL.BE.Therapist;
 import com.example.bruger.feetclinic.DAL.DALFacade;
 import com.example.bruger.feetclinic.DAL.IRepository;
 import com.example.bruger.feetclinic.Service.ConnectService;
+import com.example.bruger.feetclinic.Service.DBSynchronize.ISynchronizer;
+import com.example.bruger.feetclinic.Service.DBSynchronize.Synchronizer;
 
 import java.util.ArrayList;
 
@@ -11,16 +13,17 @@ import java.util.ArrayList;
  * Created by Bruger on 04-05-2016.
  */
 public class TherapistManager implements IManager<Therapist> {
-    DALFacade dalFactory;
+    DALFacade dalFacade;
     IRepository<Therapist> workingRepository;
     ConnectService connectService;
+    ISynchronizer synchronizer;
 
 
     public TherapistManager()
      {
          connectService = new ConnectService();
-         dalFactory = new DALFacade();
-         workingRepository = dalFactory.getTherapistRepository(connectService.isOnline());
+         dalFacade = new DALFacade();
+         workingRepository = dalFacade.getTherapistRepository(connectService.isOnline());
     }
 
     @Override
@@ -50,7 +53,14 @@ public class TherapistManager implements IManager<Therapist> {
 
     @Override
     public boolean synchronize() {
-        return false;
+        boolean isOk = false;
+        if (synchronizer == null){
+            synchronizer = new Synchronizer();
+        }
+        if (connectService.isOnline()){
+            isOk = synchronizer.synchronize(dalFacade.getTherapistRepository(true), dalFacade.getTherapistUsyncRepository());
+        }
+        return isOk;
     }
 
     @Override
